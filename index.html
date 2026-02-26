@@ -828,9 +828,15 @@ function placeOrder() {
   orders.unshift(order);
   saveOrders();
 
-  try {
-    Telegram.WebApp.sendData(JSON.stringify({ type: 'order', order }));
-  } catch (e) {
+ try {
+  Telegram.WebApp.sendData(JSON.stringify({ type: 'order', order }));
+
+  // 🚀 CRITICAL FIX
+  setTimeout(() => {
+    Telegram.WebApp.close();
+  }, 300);
+
+} catch (e) {
     alert("❌ Could not send order to bot. Please press START once in the bot, then try again.");
     try { Telegram.WebApp.openTelegramLink("https://t.me/parfume_center_bot?start=shop"); } catch(err) {}
     return;
