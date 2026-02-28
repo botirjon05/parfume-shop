@@ -1,90 +1,122 @@
 """
 🌸 Parfume Center — Telegram Bot
 Handles /start and admin order status callbacks.
-Orders themselves are sent directly from the Mini App
-to Telegram's API — no server needed.
+Orders are sent directly from the Mini App to Telegram API.
 """
+
 import asyncio
 import logging
+import re
 
 from aiogram import Bot, Dispatcher, F
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
-from aiogram.types import (
-    Message, CallbackQuery,
-    ReplyKeyboardMarkup, KeyboardButton, WebAppInfo,
-)
+from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove
 
 # ── CONFIG ────────────────────────────────────────────────────────
-BOT_TOKEN = "8045542724:AAGcakq1YxNSxdCB1aw0Lln1BPKymIHUWjA"   # from @BotFather
-ADMIN_IDS = [887340351]             # your Telegram user ID (integer)
+BOT_TOKEN = "8045542724:AAGcakq1YxNSxdCB1aw0Lln1BPKymIHUWjA"  # from @BotFather
+ADMIN_IDS = [887340351]  # your Telegram user ID (integer)
 SHOP_NAME = "Parfume Center"
 WEBAPP_URL = "https://botirjon05.github.io/parfume-shop/"
 # ─────────────────────────────────────────────────────────────────
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s  %(levelname)s  %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)s  %(message)s")
+logger = logging.getLogger(__name__)
 
 dp = Dispatcher()
-
-def main_kb():
-    return ReplyKeyboardMarkup(
-        keyboard=[[KeyboardButton(
-            text="🛍 Open Shop",
-            web_app=WebAppInfo(url=WEBAPP_URL)
-        )]],
-        resize_keyboard=True,
-    )
-
 
 
 @dp.message(CommandStart())
 async def on_start(message: Message):
     await message.answer(
-        f"👋 Welcome to <b>{SHOP_NAME}</b>!\n\n"
-        "Tap the button below to browse our collection "
-        "and place an order — all inside Telegram. 🌸",
-        reply_markup=main_kb(),
+        f"👋 <b>{SHOP_NAME}ga xush kelibsiz!</b>\n\n"
+        "Bu yerda siz o‘zingizga mos noyob iforni topasiz.\n"
+        "Kolleksiyamizni ko‘rib chiqing va buyurtmangizni oson va tez rasmiylashtiring 🌸",
+        reply_markup=ReplyKeyboardRemove(remove_keyboard=True),
     )
 
 
 @dp.callback_query(F.data.startswith("st:"))
 async def on_status(callback: CallbackQuery, bot: Bot):
-    """Admin taps Confirm / Shipped / Delivered / Cancel."""
+    """
+    Admin taps Confirm / Shipped / Delivered / Cancel.
+    callback_data format: st:<customer_id>:<status>
+    where status is one of: confirmed, shipped, completed, cancelled
+    """
     if callback.from_user.id not in ADMIN_IDS:
-        await callback.answer("⛔ Not authorised", show_alert=True)
+        await callback.answer("⛔ Ruxsat yo‘q", show_alert=True)
         return
 
     try:
         _, cid, status = callback.data.split(":")
         customer_id = int(cid)
     except ValueError:
-        await callback.answer("Bad data")
+        await callback.answer("Noto‘g‘ri ma’lumot", show_alert=True)
         return
 
+    # User-facing messages (Uzbek)
     msgs = {
-        "confirmed": "✅ Your order has been <b>confirmed</b>! We're preparing it.",
-        "shipped":   "🚚 Your order is <b>on its way</b>!",
-        "completed": f"🎉 Delivered! Thank you for shopping at <b>{SHOP_NAME}</b> 🌸",
-        "cancelled": "❌ Your order was <b>cancelled</b>. Please contact us for help.",
+        "confirmed": (
+            "✅ <b>Buyurtmangiz tasdiqlandi!</b>\n\n"
+            "Buyurtmangiz tayyorlanmoqda va tez orada jo‘natiladi 🌸\n"
+            "Sabringiz uchun rahmat!"
+        ),
+        "shipped": (
+            "🚚 <b>Buyurtmangiz yo‘lga chiqdi!</b>\n\n"
+            "Tez orada manzilingizga yetkazib beriladi.\n"
+            "Iltimos, telefoningiz faol bo‘lsin 📱"
+        ),
+        "completed": (
+            f"🎉 <b>Buyurtmangiz muvaffaqiyatli yetkazildi!</b>\n\n"
+            f"<b>{SHOP_NAME}</b>ni tanlaganingiz uchun rahmat 🌸\n"
+            "Yana sizni kutib qolamiz!"
+        ),
+        "cancelled": (
+            "❌ <b>Buyurtmangiz bekor qilindi.</b>\n\n"
+            "Savollaringiz bo‘lsa, bemalol biz bilan bog‘laning."
+        ),
     }
-    text = msgs.get(status, f"Order status: {status}")
+
+    # Admin-visible label for status
+    label_map = {
+        "confirmed": "✅ Tasdiqlandi",
+        "shipped": "🚚 Yetkazilmoqda",
+        "completed": "🎉 Yetkazildi",
+        "cancelled": "❌ Bekor qilindi",
+    }
+    label = label_map.get(status, status)
+
+    text = msgs.get(status, f"📌 Buyurtma holati: <b>{label}</b>")
 
     try:
+        # 1) Notify customer
         await bot.send_message(customer_id, text)
-        await callback.answer(f"Customer notified ✓")
-        await callback.message.edit_reply_markup(reply_markup=None)
-        await callback.message.reply(f"Status → <b>{status}</b>")
+
+        # 2) Update admin message text (keep buttons so you can change status again)
+        try:
+            base = callback.message.html_text or callback.message.text or ""
+            # Remove previous "Holati" block if present (so it doesn't stack)
+            base = re.sub(r"\n\n📌 <b>Holati:</b>.*$", "", base, flags=re.S)
+
+            new_text = base + f"\n\n📌 <b>Holati:</b> {label}"
+            await callback.message.edit_text(
+                new_text,
+                reply_markup=callback.message.reply_markup,
+                disable_web_page_preview=True,
+            )
+        except Exception as e:
+            logger.warning(f"Could not edit admin message: {e}")
+
+        await callback.answer("✅ Mijozga xabar yuborildi")
     except Exception as e:
-        await callback.answer(f"Error: {e}", show_alert=True)
+        logger.error(f"Failed to notify customer {customer_id}: {e}")
+        await callback.answer(f"Xatolik: {e}", show_alert=True)
 
 
 async def main():
     bot = Bot(BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-    logging.info(f"🌸 {SHOP_NAME} starting…")
+    logger.info(f"🌸 {SHOP_NAME} starting…")
     await dp.start_polling(bot)
 
 
