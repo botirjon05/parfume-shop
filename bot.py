@@ -31,15 +31,6 @@ logging.basicConfig(
 dp = Dispatcher()
 
 
-def main_kb():
-    return ReplyKeyboardMarkup(
-        keyboard=[[KeyboardButton(
-            text="🛍 Open Shop",
-            web_app=WebAppInfo(url=WEBAPP_URL)
-        )]],
-        resize_keyboard=True,
-    )
-
 
 @dp.message(CommandStart())
 async def on_start(message: Message):
