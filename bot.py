@@ -30,6 +30,9 @@ logging.basicConfig(
 
 dp = Dispatcher()
 
+def main_kb():
+    return ReplyKeyboardMarkup()
+
 
 
 @dp.message(CommandStart())
