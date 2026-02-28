@@ -833,7 +833,7 @@ async function submitOrder() {
 
   } catch(err) {
     console.error(err);
-    toast('❌ Failed: ' + err.message);
+    alert('ERROR: ' + err.message + '\n\nToken starts with: ' + CONFIG.botToken.slice(0,10));
   } finally {
     btn.disabled    = false;
     btn.textContent = 'Place Order 🌸';
