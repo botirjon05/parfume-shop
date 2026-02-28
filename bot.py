@@ -1,15 +1,9 @@
 """
-🌸 Parfume Center — Telegram Mini App Bot
-
-Architecture:
-  Orders are sent directly from the Mini App (index.html) to the
-  Telegram Bot API via fetch(). This bot only needs to:
-  1. Show the /start welcome + Open Shop button
-  2. Handle admin status callbacks (Confirm / Shipped / Delivered)
-
-No HTTP server needed. Works for unlimited orders per session.
+🌸 Parfume Center — Telegram Bot
+Handles /start and admin order status callbacks.
+Orders themselves are sent directly from the Mini App
+to Telegram's API — no server needed.
 """
-
 import asyncio
 import logging
 
@@ -22,68 +16,75 @@ from aiogram.types import (
     ReplyKeyboardMarkup, KeyboardButton, WebAppInfo,
 )
 
-from config import BOT_TOKEN, ADMIN_IDS, SHOP_NAME, WEBAPP_URL
+# ── CONFIG ────────────────────────────────────────────────────────
+BOT_TOKEN = "8045542724:AAGcakq1YxNSxdCB1aw0Lln1BPKymIHUWjA"   # from @BotFather
+ADMIN_IDS = [887340351]             # your Telegram user ID (integer)
+SHOP_NAME = "Parfume Center"
+WEBAPP_URL = "https://botirjon05.github.io/parfume-shop/"
+# ─────────────────────────────────────────────────────────────────
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s  %(levelname)s  %(message)s"
+)
 
 dp = Dispatcher()
 
 
-def shop_keyboard() -> ReplyKeyboardMarkup:
+def main_kb():
     return ReplyKeyboardMarkup(
-        keyboard=[[KeyboardButton(text="🛍 Open Shop", web_app=WebAppInfo(url=WEBAPP_URL))]],
+        keyboard=[[KeyboardButton(
+            text="🛍 Open Shop",
+            web_app=WebAppInfo(url=WEBAPP_URL)
+        )]],
         resize_keyboard=True,
     )
 
 
 @dp.message(CommandStart())
-async def cmd_start(message: Message):
+async def on_start(message: Message):
     await message.answer(
         f"👋 Welcome to <b>{SHOP_NAME}</b>!\n\n"
-        f"Tap the button below to browse our exclusive perfume collection "
-        f"and place an order — all inside Telegram. 🌸",
-        reply_markup=shop_keyboard(),
+        "Tap the button below to browse our collection "
+        "and place an order — all inside Telegram. 🌸",
+        reply_markup=main_kb(),
     )
 
 
-@dp.callback_query(F.data.startswith("status:"))
-async def update_order_status(callback: CallbackQuery, bot: Bot):
-    """Admin taps Confirm / Shipped / Delivered / Cancel on an order notification."""
+@dp.callback_query(F.data.startswith("st:"))
+async def on_status(callback: CallbackQuery, bot: Bot):
+    """Admin taps Confirm / Shipped / Delivered / Cancel."""
     if callback.from_user.id not in ADMIN_IDS:
-        await callback.answer("⛔ Unauthorized", show_alert=True)
+        await callback.answer("⛔ Not authorised", show_alert=True)
         return
 
     try:
-        _, customer_id_str, status = callback.data.split(":")
-        customer_id = int(customer_id_str)
+        _, cid, status = callback.data.split(":")
+        customer_id = int(cid)
     except ValueError:
-        await callback.answer("Bad callback data")
+        await callback.answer("Bad data")
         return
 
-    status_messages = {
+    msgs = {
         "confirmed": "✅ Your order has been <b>confirmed</b>! We're preparing it.",
         "shipped":   "🚚 Your order is <b>on its way</b>!",
-        "completed": f"🎉 Your order has been <b>delivered</b>! Thank you for shopping at {SHOP_NAME} 🌸",
-        "cancelled": "❌ Your order has been <b>cancelled</b>. Please contact us if you have questions.",
+        "completed": f"🎉 Delivered! Thank you for shopping at <b>{SHOP_NAME}</b> 🌸",
+        "cancelled": "❌ Your order was <b>cancelled</b>. Please contact us for help.",
     }
-
-    customer_text = status_messages.get(status, f"Order status updated: {status}")
+    text = msgs.get(status, f"Order status: {status}")
 
     try:
-        await bot.send_message(customer_id, customer_text)
-        await callback.answer(f"✅ Customer notified: {status}")
-        # Remove buttons so the same order can't be double-actioned
+        await bot.send_message(customer_id, text)
+        await callback.answer(f"Customer notified ✓")
         await callback.message.edit_reply_markup(reply_markup=None)
-        await callback.message.reply(f"Status set to <b>{status}</b>")
+        await callback.message.reply(f"Status → <b>{status}</b>")
     except Exception as e:
-        logger.error(f"Failed to notify customer {customer_id}: {e}")
         await callback.answer(f"Error: {e}", show_alert=True)
 
 
 async def main():
-    bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-    logger.info(f"🌸 {SHOP_NAME} bot started")
+    bot = Bot(BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+    logging.info(f"🌸 {SHOP_NAME} starting…")
     await dp.start_polling(bot)
 
 
