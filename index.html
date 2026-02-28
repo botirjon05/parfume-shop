@@ -851,11 +851,11 @@ async function submitOrder() {
       `${lines}\n\n💰 <b>Jami: ${CONFIG.currency}${total.toFixed(2)}</b>`;
 
     const kb = { inline_keyboard: [[
-      { text:'✅ Tasdiqlash',   callback_data:`st:${userId}:tasdiqlandi` },
-      { text:'🚚 Yetkazilmoqda',   callback_data:`st:${userId}:yetkazilmoqda`   },
+      { text:'✅ Tasdiqlash',   callback_data:`st:${userId}:confirmed` },
+      { text:'🚚 Yetkazilmoqda',   callback_data:`st:${userId}:shipped`   },
     ],[
-      { text:'🎉 Yetkazildi', callback_data:`st:${userId}:yetkazildi` },
-      { text:'❌ Bekor qilish',    callback_data:`st:${userId}:bekor qilindi` },
+      { text:'🎉 Yetkazildi', callback_data:`st:${userId}:completed` },
+      { text:'❌ Bekor qilish',    callback_data:`st:${userId}:cancelled` },
     ]]};
 
     await Promise.all(CONFIG.adminIds.map(aid => tgSend(aid, adminTxt, kb)));
