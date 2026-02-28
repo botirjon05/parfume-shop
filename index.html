@@ -181,6 +181,10 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 48px; position: relative; overflow: hidden;
     }
+    .product-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      position: absolute; inset: 0;
+    }
     .product-badge {
       position: absolute; top: 8px; left: 8px;
       background: var(--rose); color: white;
@@ -219,6 +223,9 @@
       aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
       font-size: 80px; position: relative;
     }
+    .detail-hero img {
+      width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;
+    }
     .detail-back {
       position: absolute; top: 16px; left: 16px;
       width: 36px; height: 36px; border-radius: 50%;
@@ -248,6 +255,7 @@
       padding: 16px 20px calc(16px + var(--tg-safe-bottom));
       display: flex; align-items: center; gap: 12px;
     }
+    .detail-price-block {}
     .detail-price-label { font-size: 11px; color: var(--muted); }
     .detail-price { font-size: 22px; font-weight: 500; }
     .detail-add-btn {
@@ -261,9 +269,14 @@
     .detail-add-btn.in-cart { background: var(--gold); }
 
     /* ── CART PAGE ──────────────────────── */
-    .cart-empty { text-align: center; padding: 60px 20px; }
+    .cart-empty {
+      text-align: center; padding: 60px 20px;
+    }
     .cart-empty-icon { font-size: 48px; margin-bottom: 12px; }
-    .cart-empty h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; margin-bottom: 6px; }
+    .cart-empty h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; margin-bottom: 6px;
+    }
     .cart-empty p { font-size: 13px; color: var(--muted); }
 
     .cart-items { padding: 16px 20px; }
@@ -276,10 +289,14 @@
       width: 60px; height: 60px; border-radius: 12px;
       background: var(--parchment); flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 24px;
+      font-size: 24px; overflow: hidden;
     }
+    .cart-item-img img { width: 100%; height: 100%; object-fit: cover; }
     .cart-item-info { flex: 1; }
-    .cart-item-name { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 600; margin-bottom: 2px; }
+    .cart-item-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px; font-weight: 600; margin-bottom: 2px;
+    }
     .cart-item-price { font-size: 13px; color: var(--muted); }
     .cart-item-controls { display: flex; align-items: center; gap: 8px; }
     .qty-btn {
@@ -306,6 +323,7 @@
       transition: background 0.2s;
     }
     .checkout-btn:active { background: var(--gold); }
+    .checkout-btn:disabled { background: var(--muted); cursor: default; }
 
     /* ── ORDERS PAGE ────────────────────── */
     .orders-list { padding: 16px 20px; }
@@ -317,7 +335,9 @@
     }
     .order-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
     .order-id { font-size: 13px; color: var(--muted); }
-    .order-status { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 50px; }
+    .order-status {
+      font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 50px;
+    }
     .status-pending { background: #FFF3CD; color: #856404; }
     .status-confirmed { background: #D1E7DD; color: #0A5132; }
     .status-shipped { background: #CFE2FF; color: #084298; }
@@ -344,8 +364,14 @@
       max-height: 85vh; overflow-y: auto;
     }
     .sheet.open { transform: translateY(0); }
-    .sheet-handle { width: 36px; height: 4px; border-radius: 2px; background: var(--border); margin: 12px auto 20px; }
-    .sheet-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; margin-bottom: 20px; }
+    .sheet-handle {
+      width: 36px; height: 4px; border-radius: 2px;
+      background: var(--border); margin: 12px auto 20px;
+    }
+    .sheet-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px; font-weight: 600; margin-bottom: 20px;
+    }
     .form-group { margin-bottom: 16px; }
     .form-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; display: block; letter-spacing: 0.05em; text-transform: uppercase; }
     .form-input {
@@ -356,7 +382,9 @@
       transition: border-color 0.2s;
     }
     .form-input:focus { border-color: var(--gold); }
-    .form-textarea { resize: none; height: 80px; }
+    .form-textarea {
+      resize: none; height: 80px;
+    }
     .place-order-btn {
       width: 100%; background: var(--dark); color: white;
       border: none; border-radius: 50px;
@@ -382,8 +410,14 @@
       margin-bottom: 20px;
       animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .success-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; margin-bottom: 8px; }
+    @keyframes popIn {
+      from { transform: scale(0); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .success-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px; font-weight: 600; margin-bottom: 8px;
+    }
     .success-sub { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 32px; }
     .success-btn {
       background: var(--dark); color: white;
@@ -403,11 +437,13 @@
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+    /* ── BOTTOM PADDING ─────────────────── */
     .bottom-pad { height: calc(20px + var(--tg-safe-bottom)); }
   </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <div class="header">
   <div class="header-logo">Parfume <span>Center</span></div>
   <button class="cart-btn" onclick="showPage('cart')">
@@ -416,6 +452,7 @@
   </button>
 </div>
 
+<!-- NAV -->
 <div class="nav">
   <div class="nav-tab active" data-page="home" onclick="showPage('home')">Home</div>
   <div class="nav-tab" data-page="catalog" onclick="showPage('catalog')">Catalog</div>
@@ -423,6 +460,7 @@
   <div class="nav-tab" data-page="orders" onclick="showPage('orders')">My Orders</div>
 </div>
 
+<!-- ══════════ HOME PAGE ══════════ -->
 <div class="page active" id="page-home">
   <div class="hero">
     <div class="hero-tag">New Collection 2025</div>
@@ -442,21 +480,25 @@
   <div class="bottom-pad"></div>
 </div>
 
+<!-- ══════════ CATALOG PAGE ══════════ -->
 <div class="page" id="page-catalog">
   <div class="category-scroll" id="categoryScroll"></div>
   <div class="product-grid" id="catalogGrid"></div>
   <div class="bottom-pad"></div>
 </div>
 
+<!-- ══════════ CART PAGE ══════════ -->
 <div class="page" id="page-cart">
   <div id="cartContent"></div>
 </div>
 
+<!-- ══════════ ORDERS PAGE ══════════ -->
 <div class="page" id="page-orders">
   <div class="orders-list" id="ordersList"></div>
   <div class="bottom-pad"></div>
 </div>
 
+<!-- ══════════ PRODUCT DETAIL ══════════ -->
 <div class="detail-page" id="detailPage">
   <div class="detail-hero" id="detailHero">
     <button class="detail-back" onclick="closeDetail()">←</button>
@@ -482,6 +524,7 @@
   </div>
 </div>
 
+<!-- ══════════ CHECKOUT SHEET ══════════ -->
 <div class="sheet-overlay" id="sheetOverlay" onclick="closeCheckout()"></div>
 <div class="sheet" id="checkoutSheet">
   <div class="sheet-handle"></div>
@@ -505,6 +548,7 @@
   <button class="place-order-btn" onclick="placeOrder()">Place Order 🌸</button>
 </div>
 
+<!-- ══════════ SUCCESS ══════════ -->
 <div class="success-overlay" id="successOverlay">
   <div class="success-icon">✓</div>
   <div class="success-title">Order Placed!</div>
@@ -512,49 +556,31 @@
   <button class="success-btn" onclick="afterSuccess()">Continue Shopping</button>
 </div>
 
+<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ── TELEGRAM INIT ─────────────────────────────────────────
+// ── TELEGRAM WEBAPP INIT ─────────────────────────────────────────
 const tg = window.Telegram?.WebApp;
 if (tg) {
   tg.ready();
   tg.expand();
   tg.setHeaderColor('#F9F5EF');
   tg.setBackgroundColor('#F9F5EF');
-  try { tg.enableClosingConfirmation(); } catch(e) {}
 }
 
-// Hard guard to prevent "silent orders" that never reach the bot
-function ensureTelegramSessionOrExplain() {
-  if (!window.Telegram || !Telegram.WebApp) {
-    alert("❌ Please open this shop inside Telegram from @parfume_center_bot.");
-    return false;
-  }
-  const t = Telegram.WebApp;
-
-  // If initData empty -> user hasn't pressed Start once (or session not initialized)
-  if (!t.initData || t.initData.length === 0) {
-    alert(
-      "⚠️ To place orders, please press START in the bot once.\n\n" +
-      "Open: @parfume_center_bot\n" +
-      "Then tap 🛍 Open Shop again."
-    );
-    try { t.openTelegramLink("https://t.me/parfume_center_bot?start=shop"); } catch(e) {}
-    return false;
-  }
-  return true;
-}
-
-// ── DATA ─────────────────────────────────────────
-const CURRENCY = '$';
+// ── CONFIG — fill these two values in ──────────────────────────
+const CURRENCY    = '$';
+const BOT_TOKEN   = '8045542724:AAGcakq1YxNSxdCB1aw0Lln1BPKymIHUWjA';   // same token as config.py
+const ADMIN_IDS   = [887340351];             // same list as config.py
+// ────────────────────────────────────────────────────────────────
 
 const categories = [
-  { id: 'all', name: '✨ All' },
-  { id: '1',   name: '👩 For Her' },
-  { id: '2',   name: '👨 For Him' },
-  { id: '3',   name: '✨ Unisex' },
-  { id: '4',   name: '🎁 Gift Sets' },
+  { id: 'all', name: '✨ All', emoji: '' },
+  { id: '1',   name: '👩 For Her', emoji: '👩' },
+  { id: '2',   name: '👨 For Him', emoji: '👨' },
+  { id: '3',   name: '✨ Unisex', emoji: '✨' },
+  { id: '4',   name: '🎁 Gift Sets', emoji: '🎁' },
 ];
 
 const products = [
@@ -596,7 +622,7 @@ const products = [
   },
 ];
 
-// ── STATE ─────────────────────────────────────────
+// ── STATE ─────────────────────────────────────────────────────────
 let cart = JSON.parse(localStorage.getItem('cart') || '{}');
 let orders = JSON.parse(localStorage.getItem('orders') || '[]');
 let selectedCat = 'all';
@@ -605,7 +631,7 @@ let currentProduct = null;
 function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); }
 function saveOrders() { localStorage.setItem('orders', JSON.stringify(orders)); }
 
-// ── NAVIGATION ─────────────────────────────────────────
+// ── NAVIGATION ────────────────────────────────────────────────────
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
@@ -621,7 +647,33 @@ function showPage(name) {
   updateCartBadge();
 }
 
-// ── RENDER FEATURED ─────────────────────────────────────────
+// ── RENDER FEATURED ───────────────────────────────────────────────
+function renderFeatured() {
+  const featured = products.filter(p => p.badge || p.id === 5).slice(0, 4);
+  const grid = document.getElementById('featuredGrid');
+  grid.innerHTML = featured.map((p, i) => productCardHTML(p, i)).join('');
+}
+
+// ── RENDER CATALOG ────────────────────────────────────────────────
+function renderCatalog() {
+  // Categories
+  const scroll = document.getElementById('categoryScroll');
+  scroll.innerHTML = categories.map(c =>
+    `<div class="cat-chip ${c.id === selectedCat ? 'active' : ''}"
+      onclick="filterCat('${c.id}')">${c.name}</div>`
+  ).join('');
+
+  // Products
+  const filtered = selectedCat === 'all' ? products : products.filter(p => p.catId === selectedCat);
+  const grid = document.getElementById('catalogGrid');
+  grid.innerHTML = filtered.map((p, i) => productCardHTML(p, i)).join('');
+}
+
+function filterCat(id) {
+  selectedCat = id;
+  renderCatalog();
+}
+
 function productCardHTML(p, i) {
   const qty = cart[p.id] || 0;
   return `
@@ -643,29 +695,7 @@ function productCardHTML(p, i) {
     </div>`;
 }
 
-function renderFeatured() {
-  const featured = products.filter(p => p.badge || p.id === 5).slice(0, 4);
-  document.getElementById('featuredGrid').innerHTML = featured.map((p, i) => productCardHTML(p, i)).join('');
-}
-
-// ── CATALOG ─────────────────────────────────────────
-function filterCat(id) {
-  selectedCat = id;
-  renderCatalog();
-}
-
-function renderCatalog() {
-  const scroll = document.getElementById('categoryScroll');
-  scroll.innerHTML = categories.map(c =>
-    `<div class="cat-chip ${c.id === selectedCat ? 'active' : ''}"
-      onclick="filterCat('${c.id}')">${c.name}</div>`
-  ).join('');
-
-  const filtered = selectedCat === 'all' ? products : products.filter(p => p.catId === selectedCat);
-  document.getElementById('catalogGrid').innerHTML = filtered.map((p, i) => productCardHTML(p, i)).join('');
-}
-
-// ── DETAIL ─────────────────────────────────────────
+// ── PRODUCT DETAIL ────────────────────────────────────────────────
 function openDetail(id) {
   const p = products.find(x => x.id === id);
   if (!p) return;
@@ -704,7 +734,7 @@ function closeDetail() {
   if (document.getElementById('page-home').classList.contains('active')) renderFeatured();
 }
 
-// ── CART ─────────────────────────────────────────
+// ── CART ──────────────────────────────────────────────────────────
 function addToCart(id) {
   cart[id] = (cart[id] || 0) + 1;
   saveCart();
@@ -719,14 +749,6 @@ function updateCartBadge() {
   const badge = document.getElementById('cartCount');
   badge.textContent = total;
   badge.classList.toggle('visible', total > 0);
-}
-
-function changeQty(id, delta) {
-  cart[id] = (cart[id] || 0) + delta;
-  if (cart[id] <= 0) delete cart[id];
-  saveCart();
-  updateCartBadge();
-  renderCart();
 }
 
 function renderCart() {
@@ -779,8 +801,17 @@ function renderCart() {
     <div class="bottom-pad"></div>`;
 }
 
-// ── CHECKOUT ─────────────────────────────────────────
+function changeQty(id, delta) {
+  cart[id] = (cart[id] || 0) + delta;
+  if (cart[id] <= 0) delete cart[id];
+  saveCart();
+  updateCartBadge();
+  renderCart();
+}
+
+// ── CHECKOUT ──────────────────────────────────────────────────────
 function openCheckout() {
+  // Pre-fill from Telegram user if available
   if (tg?.initDataUnsafe?.user) {
     const u = tg.initDataUnsafe.user;
     const nameField = document.getElementById('chkName');
@@ -795,7 +826,30 @@ function closeCheckout() {
   document.getElementById('checkoutSheet').classList.remove('open');
 }
 
-function placeOrder() {
+// ── SEND MESSAGE VIA TELEGRAM BOT API ───────────────────────────
+// Called directly from the browser — no server needed.
+// Works for unlimited orders in the same session (unlike sendData).
+async function tgSendMessage(chatId, text, replyMarkup) {
+  const body = {
+    chat_id:    chatId,
+    text:       text,
+    parse_mode: 'HTML',
+  };
+  if (replyMarkup) body.reply_markup = JSON.stringify(replyMarkup);
+
+  const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(`Telegram API error: ${err.description}`);
+  }
+  return res.json();
+}
+
+async function placeOrder() {
   const name    = document.getElementById('chkName').value.trim();
   const phone   = document.getElementById('chkPhone').value.trim();
   const address = document.getElementById('chkAddress').value.trim();
@@ -806,8 +860,11 @@ function placeOrder() {
     return;
   }
 
-  // ✅ Prevent silent failures (multi-account fix)
-  if (!ensureTelegramSessionOrExplain()) return;
+  const userId = tg?.initDataUnsafe?.user?.id;
+  if (!userId) {
+    showToast('❌ Please open this shop from inside Telegram');
+    return;
+  }
 
   const items = Object.entries(cart).map(([id, qty]) => {
     const p = products.find(x => x.id == id);
@@ -816,39 +873,75 @@ function placeOrder() {
 
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
   const shipping = subtotal > 100 ? 0 : 9.99;
+  const total    = subtotal + shipping;
+  const orderId  = Date.now();
 
   const order = {
-    id: Date.now(),
-    items, name, phone, address, note,
-    total: subtotal + shipping,
-    status: 'pending',
-    date: new Date().toISOString(),
+    id: orderId, items, name, phone, address, note,
+    total, status: 'pending', date: new Date().toISOString(),
   };
 
-  orders.unshift(order);
-  saveOrders();
+  const btn = document.querySelector('.place-order-btn');
+  btn.disabled    = true;
+  btn.textContent = 'Placing order...';
 
- try {
-  Telegram.WebApp.sendData(JSON.stringify({ type: 'order', order }));
+  try {
+    const itemsText = items
+      .map(i => `  • ${i.name} ×${i.qty}  $${(i.price * i.qty).toFixed(2)}`)
+      .join('\n');
 
-  // 🚀 CRITICAL FIX
-  setTimeout(() => {
-    Telegram.WebApp.close();
-  }, 300);
+    const noteLine = note ? `\n📝 Note: ${note}` : '';
 
-} catch (e) {
-    alert("❌ Could not send order to bot. Please press START once in the bot, then try again.");
-    try { Telegram.WebApp.openTelegramLink("https://t.me/parfume_center_bot?start=shop"); } catch(err) {}
-    return;
+    // 1️⃣ Confirm to customer
+    await tgSendMessage(
+      userId,
+      `🎉 <b>Order Received!</b>\n\n${itemsText}\n\n` +
+      `💰 <b>Total: $${total.toFixed(2)}</b>\n` +
+      `📱 Phone: ${phone}\n` +
+      `🏠 Address: ${address}${noteLine}\n\n` +
+      `We'll confirm your order shortly! ✨`
+    );
+
+    // 2️⃣ Notify every admin
+    const adminText =
+      `🔔 <b>New Order #${String(orderId).slice(-6)}</b>\n\n` +
+      `👤 <a href="tg://user?id=${userId}">Customer</a> (ID: ${userId})\n` +
+      `📱 ${phone}\n` +
+      `🏠 ${address}${noteLine}\n\n` +
+      `🛒 Items:\n${itemsText}\n\n` +
+      `💰 <b>Total: $${total.toFixed(2)}</b>`;
+
+    const statusKeyboard = {
+      inline_keyboard: [[
+        { text: '✅ Confirm',   callback_data: `status:${userId}:confirmed` },
+        { text: '🚚 Shipped',   callback_data: `status:${userId}:shipped` },
+      ],[
+        { text: '🎉 Delivered', callback_data: `status:${userId}:completed` },
+        { text: '❌ Cancel',    callback_data: `status:${userId}:cancelled` },
+      ]]
+    };
+
+    await Promise.all(ADMIN_IDS.map(adminId =>
+      tgSendMessage(adminId, adminText, statusKeyboard)
+    ));
+
+    // ✅ Success — save order locally and clear cart
+    orders.unshift(order);
+    saveOrders();
+    cart = {};
+    saveCart();
+    updateCartBadge();
+    closeCheckout();
+    document.getElementById('successOverlay').classList.add('show');
+    tg?.HapticFeedback?.notificationOccurred('success');
+
+  } catch (err) {
+    console.error('Order error:', err);
+    showToast('❌ Order failed: ' + err.message);
+  } finally {
+    btn.disabled    = false;
+    btn.textContent = 'Place Order 🌸';
   }
-
-  cart = {};
-  saveCart();
-  updateCartBadge();
-  closeCheckout();
-
-  document.getElementById('successOverlay').classList.add('show');
-  tg?.HapticFeedback?.notificationOccurred('success');
 }
 
 function afterSuccess() {
@@ -856,11 +949,7 @@ function afterSuccess() {
   showPage('home');
 }
 
-// ── ORDERS ─────────────────────────────────────────
-function statusLabel(s) {
-  return {pending:'⏳ Pending', confirmed:'✅ Confirmed', shipped:'🚚 Shipped', completed:'🎉 Delivered', cancelled:'❌ Cancelled'}[s] || s;
-}
-
+// ── ORDERS ────────────────────────────────────────────────────────
 function renderOrders() {
   const list = document.getElementById('ordersList');
   if (orders.length === 0) {
@@ -888,7 +977,11 @@ function renderOrders() {
   }).join('');
 }
 
-// ── TOAST ─────────────────────────────────────────
+function statusLabel(s) {
+  return {pending:'⏳ Pending', confirmed:'✅ Confirmed', shipped:'🚚 Shipped', completed:'🎉 Delivered', cancelled:'❌ Cancelled'}[s] || s;
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -896,7 +989,7 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2000);
 }
 
-// ── INIT ─────────────────────────────────────────
+// ── INIT ──────────────────────────────────────────────────────────
 updateCartBadge();
 renderFeatured();
 </script>
