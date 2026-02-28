@@ -526,7 +526,19 @@ const CONFIG = {
 
 /* ── TELEGRAM INIT ── */
 const tg = window.Telegram?.WebApp;
-if (tg) { tg.ready(); tg.expand(); }
+if (tg) {
+  tg.ready();
+  tg.expand();
+  // Ensure initDataUnsafe is populated (menu button context needs a tick)
+  if (!tg.initDataUnsafe?.user && tg.initData) {
+    try {
+      const p = new URLSearchParams(tg.initData);
+      const u = JSON.parse(decodeURIComponent(p.get('user') || '{}'));
+      if (u.id && !tg.initDataUnsafe) tg.initDataUnsafe = { user: u };
+      else if (u.id) tg.initDataUnsafe.user = u;
+    } catch(e) {}
+  }
+}
 
 /* ── CATALOG DATA ── */
 const CATS = [
@@ -753,18 +765,33 @@ function closeCheckout() {
 
 /* ── SEND MESSAGE via Telegram Bot API (no server needed) ── */
 async function tgSend(chatId, text, replyMarkup) {
+  // Debug: check token is set
+  if (!CONFIG.botToken || CONFIG.botToken.includes('YOUR_BOT')) {
+    throw new Error('Bot token not set in CONFIG!');
+  }
+  if (!chatId) {
+    throw new Error('Could not get your Telegram ID. Please close and reopen the shop.');
+  }
+
   const body = { chat_id: chatId, text, parse_mode: 'HTML' };
   if (replyMarkup) body.reply_markup = JSON.stringify(replyMarkup);
-  const r = await fetch(`https://api.telegram.org/bot${CONFIG.botToken}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  if (!r.ok) {
-    const e = await r.json();
-    throw new Error(e.description || 'Telegram API error');
+
+  let r;
+  try {
+    r = await fetch(`https://api.telegram.org/bot${CONFIG.botToken}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+  } catch(netErr) {
+    throw new Error('Network error — check internet connection: ' + netErr.message);
   }
-  return r.json();
+
+  const json = await r.json();
+  if (!r.ok || !json.ok) {
+    throw new Error('Telegram said: ' + (json.description || r.status));
+  }
+  return json;
 }
 
 /* ── SUBMIT ORDER ── */
@@ -776,7 +803,16 @@ async function submitOrder() {
 
   if (!name || !phone || !addr) { toast('Please fill all required fields'); return; }
 
-  const userId = tg?.initDataUnsafe?.user?.id;
+  // Menu button opens WebApp before tg.initDataUnsafe is populated.
+  // We extract the user ID from initData string as a fallback.
+  let userId = tg?.initDataUnsafe?.user?.id;
+  if (!userId && tg?.initData) {
+    try {
+      const params = new URLSearchParams(tg.initData);
+      const user   = JSON.parse(decodeURIComponent(params.get('user') || '{}'));
+      userId = user.id;
+    } catch(e) {}
+  }
   if (!userId) { toast('Please open this app inside Telegram'); return; }
 
   const items = Object.entries(cart).map(([id, qty]) => {
@@ -832,8 +868,15 @@ async function submitOrder() {
     tg?.HapticFeedback?.notificationOccurred('success');
 
   } catch(err) {
-    console.error(err);
-    alert('ERROR: ' + err.message + '\n\nToken starts with: ' + CONFIG.botToken.slice(0,10));
+    console.error('ORDER ERROR:', err);
+    const tokenPreview = CONFIG.botToken ? CONFIG.botToken.slice(0,15)+'...' : 'NOT SET';
+    const userIdVal = tg?.initDataUnsafe?.user?.id || 'NOT FOUND';
+    alert(
+      '❌ Order failed\n\n' +
+      'Error: ' + err.message + '\n\n' +
+      'Token (first 15 chars): ' + tokenPreview + '\n' +
+      'Your Telegram ID: ' + userIdVal
+    );
   } finally {
     btn.disabled    = false;
     btn.textContent = 'Place Order 🌸';
