@@ -396,25 +396,25 @@ body{
   <div class="logo">Parfume <em>Center</em></div>
   <div class="cart-pill" onclick="nav('cart')">
     <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-    Cart <span class="badge" id="badge">0</span>
+    Savat <span class="badge" id="badge">0</span>
   </div>
 </div>
 
 <!-- PAGES -->
 <div class="page on" id="p-home">
   <div class="hero">
-    <div class="hero-label">New Collection 2025</div>
-    <h1>Discover Your<br><em>Signature</em> Scent</h1>
-    <p>Luxury perfumes crafted for every<br>moment and every mood.</p>
+    <div class="hero-label"> Yangi To'plam 2025 </div>
+    <h1>O'zingizning Noyob<br><em>Iforingizni</em> Kashf Eting</h1>
+    <p>Har bir lahza va har bir kayfiyat uchun yaratilgan<br>hashamatli atirlar.</p>
     <button class="hero-cta" onclick="nav('catalog')">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      Shop Now
+      Buyurtma Berish
     </button>
   </div>
   <div class="sec">
     <div class="sec-row">
-      <div class="sec-title">Featured</div>
-      <div class="sec-link" onclick="nav('catalog')">See all →</div>
+      <div class="sec-title">Tavsiya Etilgan Top</div>
+      <div class="sec-link" onclick="nav('catalog')">Barchasini ko'rish →</div>
     </div>
   </div>
   <div class="pgrid" id="home-grid"></div>
@@ -437,19 +437,19 @@ body{
 <div class="bnav">
   <div class="bnav-btn active" id="nav-home" onclick="nav('home')">
     <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    Home
+    Bosh Sahifa
   </div>
   <div class="bnav-btn" id="nav-catalog" onclick="nav('catalog')">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-    Catalog
+    Katalog
   </div>
   <div class="bnav-btn" id="nav-cart" onclick="nav('cart')">
     <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-    Cart
+    Savat
   </div>
   <div class="bnav-btn" id="nav-orders" onclick="nav('orders')">
     <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-    Orders
+    Buyurtmalar
   </div>
 </div>
 
@@ -464,13 +464,13 @@ body{
     <div class="dsheet-vol" id="d-vol"></div>
     <div class="dsheet-desc" id="d-desc"></div>
     <div class="notes-wrap">
-      <div class="notes-lbl">Fragrance Notes</div>
+      <div class="notes-lbl">Atir Notalari</div>
       <div class="notes-row" id="d-notes"></div>
     </div>
   </div>
   <div class="dsheet-foot">
     <div class="dsheet-price">
-      <div class="dsheet-price-lbl">Price</div>
+      <div class="dsheet-price-lbl">Narx</div>
       <div class="dsheet-price-val" id="d-price"></div>
     </div>
     <button class="dsheet-add" id="d-addbtn"></button>
@@ -481,32 +481,32 @@ body{
 <div class="overlay" id="co-overlay" onclick="closeCheckout()"></div>
 <div class="co-sheet" id="co-sheet">
   <div class="dsheet-drag" style="margin-bottom:18px"></div>
-  <div class="co-title">Complete Order</div>
+  <div class="co-title">Buyurtmani Yakunlash</div>
   <div class="fgrp">
-    <label class="flbl">Full Name *</label>
-    <input class="finp" id="f-name" placeholder="Your full name"/>
+    <label class="flbl">To'liq Ism *</label>
+    <input class="finp" id="f-name" placeholder="Ism va Familyangizni Kiriting"/>
   </div>
   <div class="fgrp">
-    <label class="flbl">Phone Number *</label>
-    <input class="finp" id="f-phone" placeholder="+1 234 567 8900" type="tel"/>
+    <label class="flbl">Telefon Raqam *</label>
+    <input class="finp" id="f-phone" placeholder="+(998)" type="tel"/>
   </div>
   <div class="fgrp">
-    <label class="flbl">Delivery Address *</label>
-    <input class="finp" id="f-addr" placeholder="Street, City, Country"/>
+    <label class="flbl">Yetkazib Berish Manzili *</label>
+    <input class="finp" id="f-addr" placeholder="Manzilingizni Kiriting"/>
   </div>
   <div class="fgrp">
-    <label class="flbl">Note (optional)</label>
-    <textarea class="finp ftx" id="f-note" placeholder="Gift wrapping, special requests..."></textarea>
+    <label class="flbl">Izoh (ixtiyoriy)</label>
+    <textarea class="finp ftx" id="f-note" placeholder="Taklif va Murojaatlaringizni Kiriting"></textarea>
   </div>
-  <button class="sub-btn" id="sub-btn" onclick="submitOrder()">Place Order 🌸</button>
+  <button class="sub-btn" id="sub-btn" onclick="submitOrder()">Buyurtma Berish 🌸</button>
 </div>
 
 <!-- SUCCESS -->
 <div class="success" id="success">
   <div class="success-ring">✓</div>
-  <h2>Order Placed!</h2>
-  <p>Thank you! We'll confirm your order<br>shortly via Telegram message.</p>
-  <button class="success-btn" onclick="afterSuccess()">Continue Shopping</button>
+  <h2>Buyurtmangiz Qabul Qilindi!</h2>
+  <p>Xaridingiz uchun rahmat! Buyurtmangizni tez orada<br>Telegram orqali tasdiqlaymiz.</p>
+  <button class="success-btn" onclick="afterSuccess()">Xaridni Davom Ettirish</button>
 </div>
 
 <!-- TOAST -->
@@ -542,35 +542,35 @@ if (tg) {
 
 /* ── CATALOG DATA ── */
 const CATS = [
-  { id:'all', label:'✨ All'      },
-  { id:'her', label:'👩 For Her'  },
-  { id:'him', label:'👨 For Him'  },
+  { id:'all', label:'✨ Barchasi'      },
+  { id:'her', label:'👩 Ayollar uchun'  },
+  { id:'him', label:'👨 Erkaklar uchun'  },
   { id:'uni', label:'🌿 Unisex'   },
-  { id:'gft', label:'🎁 Gift Sets'},
+  { id:'gft', label:"🎁 Sovga uchun to'plamlar "},
 ];
 
 const PRODUCTS = [
-  { id:1, cat:'her', name:'Rose Elixir',    vol:'50ml EDP', emoji:'🌹', price:89.99, badge:'Bestseller',
-    desc:'A romantic journey through blooming Turkish rose gardens, layered with ripe peach, warm musk, and creamy sandalwood.',
-    notes:['Turkish Rose','Peach','Jasmine','Sandalwood','White Musk'] },
-  { id:2, cat:'her', name:'Velvet Bloom',   vol:'50ml EDP', emoji:'💐', price:75.00,
-    desc:'Sophisticated white florals of jasmine and lily, elevated by powdery iris and a warm, sensual musky base.',
-    notes:['Jasmine','Lily','Iris','White Musk','Amber'] },
-  { id:3, cat:'him', name:'Noir Intense',   vol:'100ml EDP',emoji:'🖤', price:95.00, badge:'New',
-    desc:'Bold, commanding, unforgettable. Dark cedarwood and black pepper into smoky vetiver, anchored by leather.',
-    notes:['Black Pepper','Cedarwood','Vetiver','Leather','Labdanum'] },
-  { id:4, cat:'him', name:'Ocean Breeze',   vol:'100ml EDT',emoji:'🌊', price:65.00,
-    desc:'Crisp sea air and Amalfi lemon — effortlessly fresh with subtle driftwood for all-day wear.',
-    notes:['Sea Salt','Bergamot','Driftwood','White Musk','Citrus'] },
-  { id:5, cat:'uni', name:'Amber Dreams',   vol:'50ml EDP', emoji:'✨', price:110.00, badge:'Limited',
-    desc:'Warm, golden, enveloping. Rich amber, Madagascar vanilla, and precious oud wrapped in pure luxury.',
-    notes:['Amber','Vanilla','Oud','Benzoin','Tonka Bean'] },
-  { id:6, cat:'uni', name:'Oud Royale',     vol:'75ml EDP', emoji:'🪵', price:135.00,
-    desc:'A majestic oud accord with saffron, rose, and smoky incense. Regal and long-lasting.',
-    notes:['Oud','Saffron','Rose','Incense','Patchouli'] },
-  { id:7, cat:'gft', name:'Discovery Set',  vol:'3×15ml',   emoji:'🎁', price:69.99,
-    desc:'Three iconic minis — Rose Elixir, Noir Intense & Amber Dreams — in a luxurious gift box.',
-    notes:['Rose','Oud','Amber','Musk','Cedarwood'] },
+  { id:1, cat:'her', name:'Baccarat Rouge 540',    vol:'70ml EDP', emoji:'✨', price:189.00, badge:'Bestseller',
+    desc:"Zafaron va Jasmin uyg'unligi, iliq ambra va kedr daraxti bilan boyitilgan. Hashamatli, yorqin va unitilmas ifor.",
+    notes:['Zafaron','Jasmine','Ambra','Kedr daraxti'] },
+  { id:2, cat:'her', name:'Libre Intense',   vol:'50ml EDP', emoji:'🌸', price:125.00, badge: "New",
+    desc:"Lavanda va apelsin gulining kuchli uyg'unligi, shirin vanil bilan boyitilgan. Zamonaviy ayollar uchun. ",
+    notes:['Lavanda','Apelsin guli','Vanil','Tonka Doni'] },
+  { id:3, cat:'her', name:'Born in Roma Donna',   vol:'50ml EDP',emoji:'🌹', price:115.00,
+    desc: "Qora smorodina va Jasmin nafisligi, iliq vanil bilan uyg'unlashgan. Nafosat va uzoq saqlanuvchi hid. ",
+    notes:['Qora smorodina','Jasmin','Vanil','Kashmeran'] },
+  { id:4, cat:'him', name:'Sauvage Elixir',   vol:'60ml EDT',emoji:'🔥', price:165.00, badge: "Bestseller",
+    desc:"Dolchin va muskat yong'og'i ziravorlari, lavanda va yog'och notalari bilan uyg'unlashgan. Kuchli va jozibador erkaklar uchun.",
+    notes:['Dolchin',"Muskat Yong'og'i",'Lavanda','Sandala daraxti'] },
+  { id:5, cat:'him', name:'Bleu De Chanel',   vol:'100ml EDP', emoji:'🖤', price:150.00, badge:'Limited',
+    desc:"Sitrus va tutunli yog'och notalari bilan chuqur va zamonaviy ifor. Har kuni uchun mukammal tanlow",
+    notes:['Greypfrut','Zanjabil','Yalpiz','Kedr Daraxti'] },
+  { id:6, cat:'uni', name:'Oud for Greatness',     vol:'90ml EDP', emoji:'🪵', price:210.00, badge: "Premium",
+    desc:"Qimmatbaho oud, zafaron va lavanda uyg'unligi. Kuchli, boy va hashamatli ifor.",
+    notes:['Oud','Zafaron','Lavanda','Patchouli'] },
+  { id:7, cat:'gft', name:'Luxury Discovery Set',  vol:'3×15ml',   emoji:'🎁', price:79.99,
+    desc:"Eng mashhur 3 ta ifordan iborat mini to'plam. Sovg'a uchun ideal tanlov.",
+    notes:['Gul','Oud','Amber','Musk',"Yog'och"] },
 ];
 
 /* ── STATE ── */
@@ -708,8 +708,8 @@ function renderCart() {
   if (!items.length) {
     wrap.innerHTML = `<div class="empty-state">
       <div class="empty-ico">🛒</div>
-      <h3>Cart is empty</h3>
-      <p>Browse the catalog and add your favourite scents.</p>
+      <h3>Savatingiz Bo'sh </h3>
+      <p>Katalogni ko'rib chiqing va yoqtirgan iforlaringizni savatga qo'shing</p>
     </div>`;
     return;
   }
@@ -740,11 +740,11 @@ function renderCart() {
   wrap.innerHTML = `
     <div class="clist">${rows}</div>
     <div class="csummary">
-      <div class="crow"><span>Subtotal</span><span>${CONFIG.currency}${subtotal.toFixed(2)}</span></div>
-      <div class="crow"><span>Shipping</span><span>${shipping ? CONFIG.currency + shipping.toFixed(2) : 'Free 🎉'}</span></div>
-      <div class="crow total"><span>Total</span><span>${CONFIG.currency}${total.toFixed(2)}</span></div>
+      <div class="crow"><span>Mahsulotlar Narxi</span><span>${CONFIG.currency}${subtotal.toFixed(2)}</span></div>
+      <div class="crow"><span>Yetkazib Berish</span><span>${shipping ? CONFIG.currency + shipping.toFixed(2) : 'Free 🎉'}</span></div>
+      <div class="crow total"><span>Jami summa</span><span>${CONFIG.currency}${total.toFixed(2)}</span></div>
     </div>
-    <button class="chk-btn" onclick="openCheckout()">Proceed to Checkout →</button>`;
+    <button class="chk-btn" onclick="openCheckout()">Buyurtma Berish →</button>`;
 }
 
 /* ── CHECKOUT ── */
@@ -770,7 +770,7 @@ async function tgSend(chatId, text, replyMarkup) {
     throw new Error('Bot token not set in CONFIG!');
   }
   if (!chatId) {
-    throw new Error('Could not get your Telegram ID. Please close and reopen the shop.');
+    throw new Error("Telegram ID aniqlanmadi. Iltimos, do'konni yopib, qayta urunib ko'ring. ");
   }
 
   const body = { chat_id: chatId, text, parse_mode: 'HTML' };
@@ -784,7 +784,7 @@ async function tgSend(chatId, text, replyMarkup) {
       body: JSON.stringify(body),
     });
   } catch(netErr) {
-    throw new Error('Network error — check internet connection: ' + netErr.message);
+    throw new Error(' Tarmoq xatosi - internet ulanishingizni tekshiring.' + netErr.message);
   }
 
   const json = await r.json();
@@ -801,7 +801,7 @@ async function submitOrder() {
   const addr  = document.getElementById('f-addr').value.trim();
   const note  = document.getElementById('f-note').value.trim();
 
-  if (!name || !phone || !addr) { toast('Please fill all required fields'); return; }
+  if (!name || !phone || !addr) { toast("Iltimos, barcha kerakli ma'lumotlarni to'ldiring."); return; }
 
   // Menu button opens WebApp before tg.initDataUnsafe is populated.
   // We extract the user ID from initData string as a fallback.
@@ -813,7 +813,7 @@ async function submitOrder() {
       userId = user.id;
     } catch(e) {}
   }
-  if (!userId) { toast('Please open this app inside Telegram'); return; }
+  if (!userId) { toast('Iltimos, ilovani Telegram ilovasida oching'); return; }
 
   const items = Object.entries(cart).map(([id, qty]) => {
     const p = PRODUCTS.find(x => x.id == id);
@@ -828,7 +828,7 @@ async function submitOrder() {
   /* disable button */
   const btn = document.getElementById('sub-btn');
   btn.disabled    = true;
-  btn.textContent = 'Placing order...';
+  btn.textContent = 'Buyurtma yuborilmoqda...';
 
   try {
     const lines     = items.map(i => `  • ${i.emoji} ${i.name} ×${i.qty}  ${CONFIG.currency}${(i.price*i.qty).toFixed(2)}`).join('\n');
@@ -837,25 +837,25 @@ async function submitOrder() {
 
     /* 1. Confirm to customer */
     await tgSend(userId,
-      `✅ <b>Order #${orderNum} Received!</b>\n\n${lines}\n\n` +
-      `💰 Total: <b>${CONFIG.currency}${total.toFixed(2)}</b>\n` +
-      `📱 ${phone}\n🏠 ${addr}${noteLine}\n\n` +
-      `We'll confirm your order shortly 🌸`
+      `✅ <b>#${orderNum} Buyurtma Qabul Qilindi!</b>\n\n${lines}\n\n` +
+      `💰 Jami: <b>${CONFIG.currency}${total.toFixed(2)}</b>\n` +
+      `📱 Telefon Raqami: ${phone}\n🏠 Manzil: ${addr}${noteLine}\n\n` +
+      `Buyurtmangizni tez orada tasdiqlaymiz 🌸`
     );
 
     /* 2. Notify each admin with action buttons */
     const adminTxt =
-      `🔔 <b>New Order #${orderNum}</b>\n\n` +
-      `👤 <a href="tg://user?id=${userId}">Customer</a> · ID: <code>${userId}</code>\n` +
-      `📱 ${phone}\n🏠 ${addr}${noteLine}\n\n` +
-      `${lines}\n\n💰 <b>Total: ${CONFIG.currency}${total.toFixed(2)}</b>`;
+      `🔔 <b>Yangi Buyurtma #${orderNum}</b>\n\n` +
+      `👤 <a href="tg://user?id=${userId}">Mijoz</a> · ID: <code>${userId}</code>\n` +
+      `📱 Telefon Raqami: ${phone}\n🏠 Manzil: ${addr}${noteLine}\n\n` +
+      `${lines}\n\n💰 <b>Jami: ${CONFIG.currency}${total.toFixed(2)}</b>`;
 
     const kb = { inline_keyboard: [[
-      { text:'✅ Confirm',   callback_data:`st:${userId}:confirmed` },
-      { text:'🚚 Shipped',   callback_data:`st:${userId}:shipped`   },
+      { text:'✅ Tasdiqlash',   callback_data:`st:${userId}:tasdiqlandi` },
+      { text:'🚚 Yetkazilmoqda',   callback_data:`st:${userId}:yetkazilmoqda`   },
     ],[
-      { text:'🎉 Delivered', callback_data:`st:${userId}:completed` },
-      { text:'❌ Cancel',    callback_data:`st:${userId}:cancelled` },
+      { text:'🎉 Yetkazildi', callback_data:`st:${userId}:yetkazildi` },
+      { text:'❌ Bekor qilish',    callback_data:`st:${userId}:bekor qilindi` },
     ]]};
 
     await Promise.all(CONFIG.adminIds.map(aid => tgSend(aid, adminTxt, kb)));
@@ -879,7 +879,7 @@ async function submitOrder() {
     );
   } finally {
     btn.disabled    = false;
-    btn.textContent = 'Place Order 🌸';
+    btn.textContent = 'Buyurtma Berish 🌸';
   }
 }
 
@@ -894,12 +894,12 @@ function renderOrders() {
   if (!orders.length) {
     wrap.innerHTML = `<div class="empty-state">
       <div class="empty-ico">📦</div>
-      <h3>No orders yet</h3>
-      <p>Your order history will appear here after your first purchase.</p>
+      <h3>Hali buyurtmalar yo'q</h3>
+      <p>Xaridingizdan so'ng buyurtmalar tarixi shu yerda ko'rinadi.</p>
     </div>`;
     return;
   }
-  const labels = {pending:'⏳ Pending',confirmed:'✅ Confirmed',shipped:'🚚 Shipped',completed:'🎉 Delivered',cancelled:'❌ Cancelled'};
+  const labels = {pending:'⏳ Jarayonda',confirmed:'✅ Qabul Qilindi',shipped:'🚚 Yetkazilmoqda',completed:'🎉 Yetkazildi',cancelled:'❌ Bekor Qilindi'};
   wrap.innerHTML = orders.map((o,i) => {
     const preview = o.items.slice(0,2).map(x=>x.name).join(', ') + (o.items.length>2?'…':'');
     const cls     = 's-' + o.status;
