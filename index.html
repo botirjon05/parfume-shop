@@ -517,6 +517,8 @@ body{
    ⚙️  CONFIGURATION — CHANGE THESE TWO VALUES BEFORE USE
    ═══════════════════════════════════════════════════════════ */
 const CONFIG = {
+  botToken : '8045542724:AAGcakq1YxNSxdCB1aw0Lln1BPKymIHUWjA',  // from @BotFather  e.g. '7123456789:AAFxxx...'
+  adminIds : [887340351],            // your Telegram user ID from @userinfobot
   currency : '$',
   shopName : 'Parfume Center',
 };
@@ -761,6 +763,36 @@ function closeCheckout() {
   document.getElementById('co-sheet').classList.remove('on');
 }
 
+/* ── SEND MESSAGE via Telegram Bot API (no server needed) ── */
+async function tgSend(chatId, text, replyMarkup) {
+  // Debug: check token is set
+  if (!CONFIG.botToken || CONFIG.botToken.includes('YOUR_BOT')) {
+    throw new Error('Bot token not set in CONFIG!');
+  }
+  if (!chatId) {
+    throw new Error("Telegram ID aniqlanmadi. Iltimos, do'konni yopib, qayta urunib ko'ring. ");
+  }
+
+  const body = { chat_id: chatId, text, parse_mode: 'HTML' };
+  if (replyMarkup) body.reply_markup = JSON.stringify(replyMarkup);
+
+  let r;
+  try {
+    r = await fetch(`https://api.telegram.org/bot${CONFIG.botToken}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+  } catch(netErr) {
+    throw new Error(' Tarmoq xatosi - internet ulanishingizni tekshiring.' + netErr.message);
+  }
+
+  const json = await r.json();
+  if (!r.ok || !json.ok) {
+    throw new Error('Telegram said: ' + (json.description || r.status));
+  }
+  return json;
+}
 
 /* ── SUBMIT ORDER ── */
 async function submitOrder() {
@@ -769,83 +801,84 @@ async function submitOrder() {
   const addr  = document.getElementById('f-addr').value.trim();
   const note  = document.getElementById('f-note').value.trim();
 
-  if (!name || !phone || !addr) {
-    toast("Iltimos, barcha kerakli ma'lumotlarni to'ldiring.");
-    return;
-  }
+  if (!name || !phone || !addr) { toast("Iltimos, barcha kerakli ma'lumotlarni to'ldiring."); return; }
 
+  // Menu button opens WebApp before tg.initDataUnsafe is populated.
+  // We extract the user ID from initData string as a fallback.
   let userId = tg?.initDataUnsafe?.user?.id;
   if (!userId && tg?.initData) {
     try {
       const params = new URLSearchParams(tg.initData);
-      const user = JSON.parse(decodeURIComponent(params.get('user') || '{}'));
+      const user   = JSON.parse(decodeURIComponent(params.get('user') || '{}'));
       userId = user.id;
-    } catch (e) {}
+    } catch(e) {}
   }
-
-  if (!userId) {
-    toast("Telegram ID aniqlanmadi. Iltimos, do'konni yopib qayta oching.");
-    return;
-  }
+  if (!userId) { toast('Iltimos, ilovani Telegram ilovasida oching'); return; }
 
   const items = Object.entries(cart).map(([id, qty]) => {
     const p = PRODUCTS.find(x => x.id == id);
-    return {
-      id: +id,
-      name: p.name,
-      emoji: p.emoji,
-      price: p.price,
-      qty
-    };
+    return { id:+id, name:p.name, emoji:p.emoji, price:p.price, qty };
   });
 
-  const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
+  const subtotal = items.reduce((s,i) => s + i.price*i.qty, 0);
   const shipping = subtotal >= 100 ? 0 : 9.99;
-  const total = subtotal + shipping;
-  const orderId = Date.now();
+  const total    = subtotal + shipping;
+  const orderId  = Date.now();
 
+  /* disable button */
   const btn = document.getElementById('sub-btn');
-  btn.disabled = true;
+  btn.disabled    = true;
   btn.textContent = 'Buyurtma yuborilmoqda...';
 
   try {
-    const order = {
-      id: orderId,
-      userId,
-      name,
-      phone,
-      addr,
-      note,
-      items,
-      subtotal,
-      shipping,
-      total,
-      status: 'pending',
-      date: new Date().toISOString()
-    };
+    const lines     = items.map(i => `  • ${i.emoji} ${i.name} ×${i.qty}  ${CONFIG.currency}${(i.price*i.qty).toFixed(2)}`).join('\n');
+    const noteLine  = note ? `\n📝 <i>${note}</i>` : '';
+    const orderNum  = String(orderId).slice(-6);
 
-    if (!tg) {
-      throw new Error("Telegram WebApp topilmadi");
-    }
+    /* 1. Confirm to customer */
+    await tgSend(userId,
+      `✅ <b>#${orderNum} Buyurtma Qabul Qilindi!</b>\n\n${lines}\n\n` +
+      `💰 Jami: <b>${CONFIG.currency}${total.toFixed(2)}</b>\n` +
+      `📱 Telefon Raqami: ${phone}\n🏠 Manzil: ${addr}${noteLine}\n\n` +
+      `Buyurtmangizni tez orada tasdiqlaymiz 🌸`
+    );
 
-    tg.sendData(JSON.stringify({
-      type: "order",
-      order
-    }));
+    /* 2. Notify each admin with action buttons */
+    const adminTxt =
+      `🔔 <b>Yangi Buyurtma #${orderNum}</b>\n\n` +
+      `👤 <a href="tg://user?id=${userId}">Mijoz</a> · ID: <code>${userId}</code>\n` +
+      `📱 Telefon Raqami: ${phone}\n🏠 Manzil: ${addr}${noteLine}\n\n` +
+      `${lines}\n\n💰 <b>Jami: ${CONFIG.currency}${total.toFixed(2)}</b>`;
 
-    orders.unshift(order);
+    const kb = { inline_keyboard: [[
+      { text:'✅ Tasdiqlash',   callback_data:`st:${userId}:confirmed` },
+      { text:'🚚 Yetkazilmoqda',   callback_data:`st:${userId}:shipped`   },
+    ],[
+      { text:'🎉 Yetkazildi', callback_data:`st:${userId}:completed` },
+      { text:'❌ Bekor qilish',    callback_data:`st:${userId}:cancelled` },
+    ]]};
+
+    await Promise.all(CONFIG.adminIds.map(aid => tgSend(aid, adminTxt, kb)));
+
+    /* 3. Save locally & clear cart */
+    orders.unshift({ id:orderId, items, name, phone, addr, note, total, status:'pending', date:new Date().toISOString() });
     cart = {};
-    save();
-    syncBadge();
-    closeCheckout();
+    save(); syncBadge(); closeCheckout();
     document.getElementById('success').classList.add('on');
     tg?.HapticFeedback?.notificationOccurred('success');
 
-  } catch (err) {
+  } catch(err) {
     console.error('ORDER ERROR:', err);
-    toast('❌ Buyurtma yuborilmadi');
+    const tokenPreview = CONFIG.botToken ? CONFIG.botToken.slice(0,15)+'...' : 'NOT SET';
+    const userIdVal = tg?.initDataUnsafe?.user?.id || 'NOT FOUND';
+    alert(
+      '❌ Order failed\n\n' +
+      'Error: ' + err.message + '\n\n' +
+      'Token (first 15 chars): ' + tokenPreview + '\n' +
+      'Your Telegram ID: ' + userIdVal
+    );
   } finally {
-    btn.disabled = false;
+    btn.disabled    = false;
     btn.textContent = 'Buyurtma Berish 🌸';
   }
 }
