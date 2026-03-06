@@ -59,6 +59,7 @@ async def on_start(message: Message):
 
 @dp.message(F.web_app_data)
 async def on_webapp_order(message: Message, bot: Bot):
+    logger.info(f"WEBAPP DATA KELDI: {message.web_app_data.data}")
     try:
         raw = message.web_app_data.data
         data = json.loads(raw)
