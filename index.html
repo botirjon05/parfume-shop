@@ -1415,6 +1415,10 @@ function toast(msg) {
   document.getElementById('home-grid').innerHTML =
     '<div class="no-results" style="grid-column:1/-1;padding:40px 0">⏳ Yuklanmoqda...</div>';
   await fetchProducts();
+
+  orders =[]
+  localStorage.removeItem('pc_orders');
+
   syncBadge();
   renderHome();
 })();
