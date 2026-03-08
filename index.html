@@ -74,25 +74,22 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-he
 
 .pcard-img{
   width:100%;
-  aspect-ratio:1;
+  aspect-ratio:1 / 1;
   background:#fff;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size: 44px; 
   position:relative;
   overflow:hidden;
-  padding:10px;
 }
 
 .pcard-img img{
   width:100%;
   height:100%;
   object-fit:contain;
-  object-position:center;
-  position: absolute;
-  inset: 0;
-  z-index: 1;
+  position:absolute;
+  inset:0;
+  padding: 10px;
 }
 
 .pcard-img .pcard-emoji{position:relative;z-index:1}
