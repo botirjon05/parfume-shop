@@ -1,0 +1,77 @@
+[
+  {
+    "id": 1,
+    "cat": "her",
+    "name": "Baccarat Rouge 540",
+    "vol": "70ml EDP",
+    "emoji": "✨",
+    "price": 189,
+    "badge": "Bestseller",
+    "desc": "Zafaron va Jasmin uyg'unligi, iliq ambra va kedr daraxti bilan boyitilgan. Hashamatli, yorqin va unitilmas ifor.",
+    "notes": ["Zafaron", "Jasmin", "Ambra", "Kedr daraxti"]
+  },
+  {
+    "id": 2,
+    "cat": "her",
+    "name": "Libre Intense",
+    "vol": "50ml EDP",
+    "emoji": "🌸",
+    "price": 125,
+    "badge": "New",
+    "desc": "Lavanda va apelsin gulining kuchli uyg'unligi, shirin vanil bilan boyitilgan. Zamonaviy ayollar uchun.",
+    "notes": ["Lavanda", "Apelsin guli", "Vanil", "Tonka Doni"]
+  },
+  {
+    "id": 3,
+    "cat": "her",
+    "name": "Born in Roma Donna",
+    "vol": "50ml EDP",
+    "emoji": "🌹",
+    "price": 115,
+    "desc": "Qora smorodina va Jasmin nafisligi, iliq vanil bilan uyg'unlashgan. Nafosat va uzoq saqlanuvchi hid.",
+    "notes": ["Qora smorodina", "Jasmin", "Vanil", "Kashmeran"]
+  },
+  {
+    "id": 4,
+    "cat": "him",
+    "name": "Sauvage Elixir",
+    "vol": "60ml EDT",
+    "emoji": "🔥",
+    "price": 165,
+    "badge": "Bestseller",
+    "desc": "Dolchin va muskat ziravorlari, lavanda va yog'och notalari bilan uyg'unlashgan. Kuchli va jozibador.",
+    "notes": ["Dolchin", "Muskat Yong'og'i", "Lavanda", "Sandal daraxti"]
+  },
+  {
+    "id": 5,
+    "cat": "him",
+    "name": "Bleu De Chanel",
+    "vol": "100ml EDP",
+    "emoji": "🖤",
+    "price": 150,
+    "badge": "Limited",
+    "desc": "Sitrus va tutunli yog'och notalari bilan chuqur va zamonaviy ifor. Har kuni uchun mukammal tanlov.",
+    "notes": ["Greypfrut", "Zanjabil", "Yalpiz", "Kedr Daraxti"]
+  },
+  {
+    "id": 6,
+    "cat": "uni",
+    "name": "Oud for Greatness",
+    "vol": "90ml EDP",
+    "emoji": "🪵",
+    "price": 210,
+    "badge": "Premium",
+    "desc": "Qimmatbaho oud, zafaron va lavanda uyg'unligi. Kuchli, boy va hashamatli ifor.",
+    "notes": ["Oud", "Zafaron", "Lavanda", "Patchouli"]
+  },
+  {
+    "id": 7,
+    "cat": "gft",
+    "name": "Luxury Discovery Set",
+    "vol": "3×15ml",
+    "emoji": "🎁",
+    "price": 79.99,
+    "desc": "Eng mashhur 3 ta ifordan iborat mini to'plam. Sovg'a uchun ideal tanlov.",
+    "notes": ["Gul", "Oud", "Amber", "Musk", "Yog'och"]
+  }
+]
