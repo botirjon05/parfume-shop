@@ -488,7 +488,7 @@ select.finp option{background:var(--card);color:var(--text)}
           <option value="gft">🎁 Sovga</option>
         </select>
       </div>
-      <div class="fgrp"><label class="flbl">Emoji belgisi</label><input class="finp" id="f-emoji" placeholder="🌸" maxlength="4"/></div>
+      <div class="fgrp"><label class="flbl">Emoji belgisi</label><input class="finp" id="f-emoji" placeholder="" maxlength="4"/></div>
     </div>
     <div class="fgrp"><label class="flbl">Badge (ixtiyoriy)</label><input class="finp" id="f-pbadge" placeholder="New / Bestseller / Limited / Premium"/></div>
     <div class="fgrp"><label class="flbl">Tavsif *</label><textarea class="finp ftx" id="f-desc" style="height:80px" placeholder="Mahsulot haqida qisqacha ma'lumot..."></textarea></div>
@@ -556,25 +556,25 @@ const CATS = [
    After that, admin's saved list is used instead.
 ══════════════════════════════════════════════════ */
 const SEED_PRODUCTS = [
-  { id:1, cat:'her', name:'Baccarat Rouge 540', vol:'70ml EDP', emoji:'✨', price:189, badge:'Bestseller',
+  { id:1, cat:'her', name:'Baccarat Rouge 540', vol:'70ml EDP', emoji:'', price:189, badge:'Bestseller',
     desc:"Zafaron va Jasmin uyg'unligi, iliq ambra va kedr daraxti bilan boyitilgan. Hashamatli, yorqin va unitilmas ifor.",
     notes:['Zafaron','Jasmin','Ambra','Kedr daraxti'] },
-  { id:2, cat:'her', name:'Libre Intense', vol:'50ml EDP', emoji:'🌸', price:125, badge:'New',
+  { id:2, cat:'her', name:'Libre Intense', vol:'50ml EDP', emoji:'', price:125, badge:'New',
     desc:"Lavanda va apelsin gulining kuchli uyg'unligi, shirin vanil bilan boyitilgan. Zamonaviy ayollar uchun.",
     notes:['Lavanda','Apelsin guli','Vanil','Tonka Doni'] },
-  { id:3, cat:'her', name:'Born in Roma Donna', vol:'50ml EDP', emoji:'🌹', price:115,
+  { id:3, cat:'her', name:'Born in Roma Donna', vol:'50ml EDP', emoji:'', price:115,
     desc:"Qora smorodina va Jasmin nafisligi, iliq vanil bilan uyg'unlashgan. Nafosat va uzoq saqlanuvchi hid.",
     notes:['Qora smorodina','Jasmin','Vanil','Kashmeran'] },
-  { id:4, cat:'him', name:'Sauvage Elixir', vol:'60ml EDT', emoji:'🔥', price:165, badge:'Bestseller',
+  { id:4, cat:'him', name:'Sauvage Elixir', vol:'60ml EDT', emoji:'', price:165, badge:'Bestseller',
     desc:"Dolchin va muskat ziravorlari, lavanda va yog'och notalari bilan uyg'unlashgan. Kuchli va jozibador.",
     notes:['Dolchin',"Muskat Yong'og'i",'Lavanda','Sandal daraxti'] },
-  { id:5, cat:'him', name:'Bleu De Chanel', vol:'100ml EDP', emoji:'🖤', price:150, badge:'Limited',
+  { id:5, cat:'him', name:'Bleu De Chanel', vol:'100ml EDP', emoji:'', price:150, badge:'Limited',
     desc:"Sitrus va tutunli yog'och notalari bilan chuqur va zamonaviy ifor. Har kuni uchun mukammal tanlov.",
     notes:['Greypfrut','Zanjabil','Yalpiz','Kedr Daraxti'] },
-  { id:6, cat:'uni', name:'Oud for Greatness', vol:'90ml EDP', emoji:'🪵', price:210, badge:'Premium',
+  { id:6, cat:'uni', name:'Oud for Greatness', vol:'90ml EDP', emoji:'', price:210, badge:'Premium',
     desc:"Qimmatbaho oud, zafaron va lavanda uyg'unligi. Kuchli, boy va hashamatli ifor.",
     notes:['Oud','Zafaron','Lavanda','Patchouli'] },
-  { id:7, cat:'gft', name:'Luxury Discovery Set', vol:'3×15ml', emoji:'🎁', price:79.99,
+  { id:7, cat:'gft', name:'Luxury Discovery Set', vol:'3×15ml', emoji:'', price:79.99,
     desc:"Eng mashhur 3 ta ifordan iborat mini to'plam. Sovg'a uchun ideal tanlov.",
     notes:['Gul','Oud','Amber','Musk',"Yog'och"] },
 ];
@@ -655,7 +655,7 @@ function dbToProduct(row) {
     cat:   row.cat,
     name:  row.name,
     vol:   row.vol,
-    emoji: row.emoji || '🌸',
+    emoji: row.emoji || '',
     price: Number(row.price),
     badge: row.badge || undefined,
     desc:  row.description,
@@ -671,7 +671,7 @@ function productToDb(p) {
     cat:   p.cat,
     name:  p.name,
     vol:   p.vol,
-    emoji: p.emoji || '🌸',
+    emoji: p.emoji || '',
     price: Number(p.price),
     badge: p.badge || null,
     description: p.desc,
@@ -717,8 +717,8 @@ function cardHTML(p, delay) {
   // If image: fill absolutely, no emoji (emoji only when no image or load fails)
   const imgInner = p.image
     ? `<img src="${p.image}" alt="${p.name}" loading="lazy"
-            onerror="this.outerHTML='<span class=pcard-emoji>${p.emoji||'🌸'}</span>'">`
-    : `<span class="pcard-emoji">${p.emoji || '🌸'}</span>`;
+            onerror="this.outerHTML='<span class=pcard-emoji>${p.emoji||''}</span>'">`
+    : `<span class="pcard-emoji">${p.emoji || ''}</span>`;
   return `
   <div class="pcard" style="animation-delay:${delay}s" onclick="openDetail(${p.id})">
     <div class="pcard-img">
@@ -792,8 +792,8 @@ function openDetail(id) {
   const hero = document.getElementById('d-hero');
   hero.innerHTML = p.image
     ? `<img src="${p.image}" alt="${p.name}" onerror="this.style.display='none'"/>
-       <span style="position:relative">${p.emoji || '🌸'}</span>`
-    : `<span>${p.emoji || '🌸'}</span>`;
+       <span style="position:relative">${p.emoji || ''}</span>`
+    : `<span>${p.emoji || ''}</span>`;
 
   document.getElementById('d-cat').textContent   = CATS.find(c => c.id === p.cat)?.label || '';
   document.getElementById('d-name').textContent  = p.name;
@@ -948,7 +948,7 @@ async function submitOrder() {
 
   const items = Object.entries(cart).map(([id, qty]) => {
     const p = PRODUCTS.find(x => x.id == id);
-    return { id: +id, name: p.name, emoji: p.emoji || '🌸', price: +p.price, qty };
+    return { id: +id, name: p.name, emoji: p.emoji || '', price: +p.price, qty };
   });
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
   const shipping = subtotal >= 100 ? 0 : 9.99;
@@ -1218,8 +1218,8 @@ function renderProductManager() {
     const img = p.image
       ? `<img src="${p.image}" alt="${p.name}"
            style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"
-           onerror="this.outerHTML='<span style=\"font-size:24px\">${p.emoji||'🌸'}</span>'"/>`
-      : `<span>${p.emoji || '🌸'}</span>`;
+           onerror="this.outerHTML='<span style=\"font-size:24px\">${p.emoji||''}</span>'"/>`
+      : `<span>${p.emoji || ''}</span>`;
     const catLabel = CATS.find(c => c.id === p.cat)?.label || p.cat;
     return `
     <div class="pm-card" style="animation-delay:${i * .04}s">
@@ -1332,7 +1332,7 @@ async function saveProduct() {
     id:    editingId != null ? editingId : Date.now(),
     cat:   document.getElementById('f-cat').value,
     name, vol,
-    emoji: document.getElementById('f-emoji').value.trim() || '🌸',
+    emoji: document.getElementById('f-emoji').value.trim() || '',
     price,
     badge: document.getElementById('f-pbadge').value.trim() || undefined,
     desc, notes,
