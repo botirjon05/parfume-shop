@@ -983,11 +983,46 @@ async function submitOrder() {
       `📱 ${phone}\n🏠 ${addr}${noteLine}\n\n${lines}\n\n💰 <b>Jami: ${CONFIG.currency}${total.toFixed(2)}</b>`, kb
     )));
 
-    orders.unshift({ id: orderId, items, name, phone, addr, note, total, status: 'pending', date: new Date().toISOString(), userId });
-    cart = {};
-    saveLocal(); syncBadge(); closeCheckout();
-    document.getElementById('success').classList.add('on');
-    tg?.HapticFeedback?.notificationOccurred('success');
+    const {data: orderRow, error: orderError} = await supabase
+      .from ('orders')
+      .insert([{
+        telegram_user_id: userId,
+        customer_name: name, 
+        phone: phone,
+        address: addr,
+        note: note || null,
+        total: total, 
+        status: 'pending'
+      }])
+      .select()
+      .single();
+
+      if (orderError) throw orderError;
+
+      const orderItemsPayload = items.map(i => ({
+        order_id: orderRow.id,
+        product_id: i.id,
+        product_name = i.name,
+        product_emoji: i.emoji || null,
+        price: i.price,
+        quantity: i.qty
+      }));
+
+      const {error: itemsError} = await supabase
+        .from('order_items')
+        .insert(orderItemsPayload);
+
+      if (itemsError) throw itemsError;
+      
+      cart = {};
+      localStorage.removeItem('pc_cart');
+      syncBadge();
+      closeCheckout();
+      document.getElementById('success').classList.add('on');
+      tg?.HapticFeedback?.notificationOccurred('success');
+
+
+
 
   } catch(err) {
     console.error(err);
