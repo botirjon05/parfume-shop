@@ -70,8 +70,29 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-he
 .pcard{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:border-color .2s;animation:fadeUp .35s ease both}
 .pcard:active{border-color:var(--gold)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.pcard-img{width:100%;aspect-ratio:1;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:44px;position:relative;overflow:hidden}
-.pcard-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:1}
+
+.pcard-img{
+  width:100%;
+  aspect-ratio:1;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:44px;
+  position:relative;
+  overflow:hidden;
+  padding:10px;
+}
+.pcard-img img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  position:absolute;
+  inset:0;
+  z-index:1;
+}
+
 .pbadge{position:absolute;top:8px;left:8px;background:var(--rose);color:#fff;font-size:9px;font-weight:500;padding:3px 8px;border-radius:999px;z-index:2}
 .pcard-body{padding:11px}
 .pcard-name{font-family:'Playfair Display',serif;font-size:14px;line-height:1.3;margin-bottom:2px}
@@ -89,7 +110,16 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-he
 .dsheet.on{transform:translateY(0)}
 .drag-bar{width:36px;height:4px;border-radius:2px;background:var(--border);margin:12px auto 0}
 .dsheet-hero{aspect-ratio:16/9;background:linear-gradient(135deg,#1E1409,#0E0C0A);display:flex;align-items:center;justify-content:center;font-size:64px;position:relative;overflow:hidden}
-.dsheet-hero img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+
+.dsheet-hero img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  position:absolute;
+  inset:0;
+}
+
 .dsheet-body{padding:20px 20px 0}
 .dsheet-cat{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
 .dsheet-name{font-family:'Playfair Display',serif;font-size:26px;font-weight:400;margin-bottom:3px}
@@ -114,7 +144,14 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-he
 .clist{padding:14px 18px}
 .citem{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);animation:fadeUp .3s ease both}
 .citem-img{width:56px;height:56px;border-radius:12px;background:var(--card);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden}
-.citem-img img{width:100%;height:100%;object-fit:cover}
+
+.citem-img img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+}
+
 .citem-info{flex:1;min-width:0}
 .citem-name{font-family:'Playfair Display',serif;font-size:15px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .citem-sub{font-size:12px;color:var(--muted)}
@@ -208,8 +245,30 @@ select.finp option{background:var(--card);color:var(--text)}
 .pm-count{font-size:12px;color:var(--muted)}
 .pm-add-btn{display:flex;align-items:center;gap:5px;background:var(--gold);color:#000;border:none;border-radius:999px;padding:9px 18px;font-size:12px;font-weight:500;font-family:'Jost',sans-serif;cursor:pointer}
 .pm-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:10px;display:flex;gap:12px;align-items:center;animation:fadeUp .28s ease both}
-.pm-thumb{width:58px;height:58px;border-radius:10px;background:var(--surface);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:24px;overflow:hidden;position:relative}
-.pm-thumb img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+
+.pm-thumb{
+  width:58px;
+  height:58px;
+  border-radius:10px;
+  background:#fff;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  overflow:hidden;
+  position:relative;
+  padding:4px;
+}
+.pm-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  position:absolute;
+  inset:0;
+}
+
 .pm-info{flex:1;min-width:0}
 .pm-name{font-family:'Playfair Display',serif;font-size:14px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pm-meta{font-size:11px;color:var(--muted);margin-bottom:3px}
@@ -455,11 +514,9 @@ select.finp option{background:var(--card);color:var(--text)}
 const CONFIG = {
   botToken : '8045542724:AAGcakq1YxNSxdCB1aw0Lln1BPKymIHUWjA',
   adminIds : [887340351],
-  adminPass: 'admin123',
+  adminPass: 'admin123',   // ← o'zingizning parolingizni o'rnating
   currency : '$',
   shopName : 'Parfume Center',
-  // Raw URL for products.json — public, no token needed
-  productsUrl: 'https://raw.githubusercontent.com/botirjon05/parfume-shop/main/products.json',
 };
 
 /* ══════════════════════════════════════════════════
@@ -517,88 +574,22 @@ const SEED_PRODUCTS = [
 ];
 
 /* ══════════════════════════════════════════════════
-   STATE
-   - cart & orders  → localStorage (per-user, private)
-   - PRODUCTS       → GitHub products.json (shared, all users)
+   STATE  — all persisted in localStorage
 ══════════════════════════════════════════════════ */
-let cart     = JSON.parse(localStorage.getItem('pc_cart')   || '{}');
-let orders   = JSON.parse(localStorage.getItem('pc_orders') || '[]');
-let PRODUCTS = SEED_PRODUCTS;   // will be replaced by GitHub fetch on boot
+let cart     = JSON.parse(localStorage.getItem('pc_cart')     || '{}');
+let orders   = JSON.parse(localStorage.getItem('pc_orders')   || '[]');
+let PRODUCTS = JSON.parse(localStorage.getItem('pc_products') || 'null') || SEED_PRODUCTS;
 
 let selCat = 'all', searchQ = '', adminLoggedIn = false;
 let orderFilter = 'all', adminActiveTab = 'orders';
-let editingId = null;
+let editingId = null;   // product being edited (null = new)
 let syncTimer = null, lastUpdateId = 0;
 
-/* Save cart + orders locally (private per-user data) */
-const saveLocal = () => {
-  localStorage.setItem('pc_cart',   JSON.stringify(cart));
-  localStorage.setItem('pc_orders', JSON.stringify(orders));
+const saveAll = () => {
+  localStorage.setItem('pc_cart',     JSON.stringify(cart));
+  localStorage.setItem('pc_orders',   JSON.stringify(orders));
+  localStorage.setItem('pc_products', JSON.stringify(PRODUCTS));
 };
-
-/* ── PRODUCTS: fetch from raw GitHub (public, no token needed) ── */
-async function fetchProducts() {
-  try {
-    // Cache-bust so customers always get the latest version
-    const url = CONFIG.productsUrl + '?t=' + Date.now();
-    const r = await fetch(url);
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    PRODUCTS = await r.json();
-    // Cache locally so app works offline
-    localStorage.setItem('pc_products', JSON.stringify(PRODUCTS));
-  } catch(e) {
-    console.warn('fetchProducts failed, using cache/seed:', e.message);
-    PRODUCTS = JSON.parse(localStorage.getItem('pc_products') || 'null') || SEED_PRODUCTS;
-  }
-}
-
-/* ── PRODUCTS: push via bot (bot holds the GitHub token) ── */
-async function pushProductsViaBot(adminUserId) {
-  // Send the full product list as a special message to the bot.
-  // The bot will write it to products.json on GitHub.
-  const payload = 'PRODUCTS_UPDATE:' + JSON.stringify(PRODUCTS);
-  const r = await fetch(
-    `https://api.telegram.org/bot${CONFIG.botToken}/sendMessage`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: adminUserId,
-        text: payload,
-        // hide the raw JSON from chat — bot will delete it after processing
-      }),
-    }
-  );
-  const j = await r.json();
-  if (!r.ok || !j.ok) throw new Error('Telegram: ' + (j.description || r.status));
-  // Bot receives the message, pushes to GitHub, and sends a confirmation.
-  // We wait up to 15 s for the confirmation message to appear via getUpdates.
-  return await waitForBotConfirmation(15000);
-}
-
-/* Poll getUpdates for a PRODUCTS_OK or PRODUCTS_ERR reply from bot */
-async function waitForBotConfirmation(timeoutMs) {
-  const deadline = Date.now() + timeoutMs;
-  let offset = 0;
-  while (Date.now() < deadline) {
-    await new Promise(r => setTimeout(r, 1500));
-    try {
-      const r = await fetch(
-        `https://api.telegram.org/bot${CONFIG.botToken}/getUpdates?offset=${offset}&limit=20&timeout=1`
-      );
-      const d = await r.json();
-      for (const upd of (d.result || [])) {
-        offset = upd.update_id + 1;
-        const txt = upd.message?.text || '';
-        if (txt === 'PRODUCTS_OK') return true;
-        if (txt.startsWith('PRODUCTS_ERR:')) throw new Error(txt.replace('PRODUCTS_ERR:', ''));
-      }
-    } catch(e) {
-      if (e.message && !e.message.includes('getUpdates')) throw e;
-    }
-  }
-  throw new Error("Bot 15 soniya ichida javob bermadi. Bot ishlayotganini tekshiring.");
-}
 
 /* ══════════════════════════════════════════════════
    NAVIGATION
@@ -641,7 +632,7 @@ function cardHTML(p, delay) {
     <div class="pcard-img">
       ${p.badge ? `<div class="pbadge">${p.badge}</div>` : ''}
       ${imgEl}
-      <span style="${p.image ? 'position:relative;z-index:0' : ''}">${p.emoji || '🌸'}</span>
+      <span style="${p.image ? 'position:relative;z-index:0' : ''}">${p.emoji || ''}</span>
     </div>
     <div class="pcard-body">
       <div class="pcard-name">${p.name}</div>
@@ -710,7 +701,7 @@ function openDetail(id) {
   const hero = document.getElementById('d-hero');
   hero.innerHTML = p.image
     ? `<img src="${p.image}" alt="${p.name}" onerror="this.remove()"/><span style="position:relative">${p.emoji || '🌸'}</span>`
-    : `<span>${p.emoji || '🌸'}</span>`;
+    : `<span>${p.emoji || ''}</span>`;
 
   document.getElementById('d-cat').textContent   = CATS.find(c => c.id === p.cat)?.label || '';
   document.getElementById('d-name').textContent  = p.name;
@@ -748,7 +739,7 @@ function closeDetail() {
 ══════════════════════════════════════════════════ */
 function addItem(id) {
   cart[id] = (cart[id] || 0) + 1;
-  saveLocal(); syncBadge();
+  saveAll(); syncBadge();
   const p = PRODUCTS.find(x => x.id === id);
   toast(`${p?.emoji || '✅'} ${p?.name} savatga qo'shildi`);
   tg?.HapticFeedback?.impactOccurred('light');
@@ -757,7 +748,7 @@ function addItem(id) {
 function changeQty(id, delta) {
   cart[id] = (cart[id] || 0) + delta;
   if (cart[id] <= 0) delete cart[id];
-  saveLocal(); syncBadge(); renderCart();
+  saveAll(); syncBadge(); renderCart();
 }
 
 /* ══════════════════════════════════════════════════
@@ -863,7 +854,7 @@ async function submitOrder() {
 
   const items = Object.entries(cart).map(([id, qty]) => {
     const p = PRODUCTS.find(x => x.id == id);
-    return { id: +id, name: p.name, emoji: p.emoji || '🌸', price: +p.price, qty };
+    return { id: +id, name: p.name, emoji: p.emoji || '', price: +p.price, qty };
   });
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
   const shipping = subtotal >= 100 ? 0 : 9.99;
@@ -900,7 +891,7 @@ async function submitOrder() {
 
     orders.unshift({ id: orderId, items, name, phone, addr, note, total, status: 'pending', date: new Date().toISOString(), userId });
     cart = {};
-    saveLocal(); syncBadge(); closeCheckout();
+    saveAll(); syncBadge(); closeCheckout();
     document.getElementById('success').classList.add('on');
     tg?.HapticFeedback?.notificationOccurred('success');
 
@@ -984,7 +975,7 @@ async function syncOrderStatuses() {
         }
       }
     }
-    if (changed) saveLocal();
+    if (changed) saveAll();
     const lbl = document.getElementById('sync-lbl');
     if (lbl) lbl.textContent = 'Yangilandi: ' + new Date().toLocaleTimeString('uz-UZ', { hour:'2-digit', minute:'2-digit' });
   } catch(e) { console.warn('Sync:', e); }
@@ -1104,7 +1095,7 @@ function adminOrderHTML(o, i) {
 async function adminSetStatus(orderId, status, userId) {
   const order = orders.find(o => String(o.id) === String(orderId));
   if (!order) return;
-  order.status = status; saveLocal(); renderOrdersTab();
+  order.status = status; saveAll(); renderOrdersTab();
   if (userId) {
     const msgs = {
       confirmed: "✅ <b>Buyurtmangiz tasdiqlandi!</b>\n\nBuyurtmangiz tayyorlanmoqda va tez orada jo'natiladi 🌸",
@@ -1131,8 +1122,8 @@ function renderProductManager() {
   }
   document.getElementById('pm-list').innerHTML = PRODUCTS.map((p, i) => {
     const img = p.image
-      ? `<img src="${p.image}" alt="${p.name}" onerror="this.style.display='none'"/><span style="position:relative">${p.emoji||'🌸'}</span>`
-      : `<span>${p.emoji || '🌸'}</span>`;
+      ? `<img src="${p.image}" alt="${p.name}" onerror="this.style.display='none'"/><span style="position:relative">${p.emoji||''}</span>`
+      : `<span>${p.emoji || ''}</span>`;
     const catLabel = CATS.find(c => c.id === p.cat)?.label || p.cat;
     return `
     <div class="pm-card" style="animation-delay:${i * .04}s">
@@ -1228,7 +1219,7 @@ function handleImg(input) {
 }
 
 /* ── SAVE PRODUCT ── */
-async function saveProduct() {
+function saveProduct() {
   const name  = document.getElementById('f-pname').value.trim();
   const vol   = document.getElementById('f-vol').value.trim();
   const price = parseFloat(document.getElementById('f-pprice').value);
@@ -1244,13 +1235,16 @@ async function saveProduct() {
   const productData = {
     id:    editingId != null ? editingId : Date.now(),
     cat:   document.getElementById('f-cat').value,
-    name, vol,
-    emoji: document.getElementById('f-emoji').value.trim() || '🌸',
+    name,
+    vol,
+    emoji: document.getElementById('f-emoji').value.trim(),
     price,
     badge: document.getElementById('f-pbadge').value.trim() || undefined,
-    desc, notes,
+    desc,
+    notes,
     image: document.getElementById('f-img').value || undefined,
   };
+  // Remove undefined keys
   Object.keys(productData).forEach(k => productData[k] === undefined && delete productData[k]);
 
   if (editingId != null) {
@@ -1260,62 +1254,28 @@ async function saveProduct() {
     PRODUCTS.push(productData);
   }
 
-  // Get admin user ID from Telegram
-  let adminUserId = tg?.initDataUnsafe?.user?.id;
-  if (!adminUserId && tg?.initData) {
-    try { adminUserId = JSON.parse(decodeURIComponent(new URLSearchParams(tg.initData).get('user') || '{}')).id; } catch(e) {}
-  }
-  if (!adminUserId) { toast("Iltimos, ilovani Telegram orqali oching"); return; }
-
-  const btn = document.querySelector('.modal-save');
-  const origText = btn.textContent;
-  btn.disabled = true; btn.textContent = '⏳ Saqlanmoqda...';
-  try {
-    await pushProductsViaBot(adminUserId);
-    // Also cache locally
-    localStorage.setItem('pc_products', JSON.stringify(PRODUCTS));
-    closeProductForm();
-    renderProductManager();
-    renderHome();
-    renderCatalog();
-    toast(editingId != null ? '✅ Yangilandi — barcha foydalanuvchilarda ko\'rinadi' : '✅ Qo\'shildi — barcha foydalanuvchilarda ko\'rinadi');
-  } catch(e) {
-    toast('❌ Xatolik: ' + e.message);
-    await fetchProducts(); // roll back to last known good state
-    renderProductManager(); renderHome(); renderCatalog();
-  } finally {
-    btn.disabled = false; btn.textContent = origText;
-  }
+  saveAll();
+  closeProductForm();
+  renderProductManager();
+  renderHome();
+  renderCatalog();
+  toast(editingId != null ? '✅ Mahsulot yangilandi' : '✅ Yangi mahsulot qo\'shildi');
 }
 
 /* ── DELETE PRODUCT ── */
-async function deleteProduct(id) {
+function deleteProduct(id) {
   const p = PRODUCTS.find(x => x.id === id);
   if (!p) return;
   if (!confirm(`"${p.name}" mahsulotini o'chirishni tasdiqlaysizmi?`)) return;
-
-  const prev = [...PRODUCTS];
   PRODUCTS = PRODUCTS.filter(x => x.id !== id);
+  // Also remove from cart if present
   delete cart[id];
-  saveLocal(); syncBadge();
-
-  let adminUserId = tg?.initDataUnsafe?.user?.id;
-  if (!adminUserId && tg?.initData) {
-    try { adminUserId = JSON.parse(decodeURIComponent(new URLSearchParams(tg.initData).get('user') || '{}')).id; } catch(e) {}
-  }
-
-  try {
-    await pushProductsViaBot(adminUserId);
-    localStorage.setItem('pc_products', JSON.stringify(PRODUCTS));
-    renderProductManager();
-    renderHome();
-    renderCatalog();
-    toast(`🗑 "${p.name}" o'chirildi — barcha foydalanuvchilarda o'chirildi`);
-  } catch(e) {
-    PRODUCTS = prev; // roll back
-    renderProductManager();
-    toast('❌ O\'chirishda xatolik: ' + e.message);
-  }
+  saveAll();
+  renderProductManager();
+  renderHome();
+  renderCatalog();
+  syncBadge();
+  toast(`🗑 "${p.name}" o'chirildi`);
 }
 
 /* ══════════════════════════════════════════════════
@@ -1331,16 +1291,10 @@ function toast(msg) {
 }
 
 /* ══════════════════════════════════════════════════
-   BOOT  — fetch products from GitHub, then render
+   BOOT
 ══════════════════════════════════════════════════ */
-(async () => {
-  // Show skeleton while loading
-  document.getElementById('home-grid').innerHTML =
-    '<div class="no-results" style="grid-column:1/-1;padding:40px 0">⏳ Yuklanmoqda...</div>';
-  await fetchProducts();
-  syncBadge();
-  renderHome();
-})();
+syncBadge();
+renderHome();
 </script>
 </body>
 </html>
