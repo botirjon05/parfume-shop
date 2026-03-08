@@ -333,7 +333,6 @@ select.finp option{background:var(--card);color:var(--text)}
         <div class="pm-count" id="pm-count"></div>
         <button class="pm-add-btn" onclick="openProductForm(null)">＋ Yangi mahsulot</button>
       </div>
-      <button id="gh-test-btn" onclick="testGitHub()" style="width:100%;margin-bottom:12px;padding:9px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-family:'Jost',sans-serif;cursor:pointer;">🔗 GitHub ulanishni tekshirish</button>
       <div id="pm-list"></div>
     </div>
   </div>
@@ -456,19 +455,11 @@ select.finp option{background:var(--card);color:var(--text)}
 const CONFIG = {
   botToken : '8045542724:AAGcakq1YxNSxdCB1aw0Lln1BPKymIHUWjA',
   adminIds : [887340351],
-  adminPass: 'admin123',       // ← o'zingizning parolingizni o'rnating
+  adminPass: 'admin123',
   currency : '$',
   shopName : 'Parfume Center',
-
-  // ── GITHUB SYNC ──────────────────────────────────
-  // 1. GitHub username (https://github.com/USERNAME)
-  ghUser  : 'botirjon05',
-  // 2. Repository name (same repo as GitHub Pages)
-  ghRepo  : 'parfume-shop',
-  // 3. Personal Access Token
-  //    github.com → Settings → Developer settings → Fine-grained tokens
-  //    Permissions: "Contents" → Read & Write  (only this repo)
-  ghToken : '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',   // ← paste your token here
+  // Raw URL for products.json — public, no token needed
+  productsUrl: 'https://raw.githubusercontent.com/botirjon05/parfume-shop/main/products.json',
 };
 
 /* ══════════════════════════════════════════════════
@@ -538,103 +529,75 @@ let selCat = 'all', searchQ = '', adminLoggedIn = false;
 let orderFilter = 'all', adminActiveTab = 'orders';
 let editingId = null;
 let syncTimer = null, lastUpdateId = 0;
-let ghFileSha = '';   // needed to update file on GitHub
 
-/* Save only cart + orders locally (products go to GitHub) */
+/* Save cart + orders locally (private per-user data) */
 const saveLocal = () => {
   localStorage.setItem('pc_cart',   JSON.stringify(cart));
   localStorage.setItem('pc_orders', JSON.stringify(orders));
 };
 
-/* ── GITHUB API HELPERS ── */
-const GH_API = () =>
-  `https://api.github.com/repos/${CONFIG.ghUser}/${CONFIG.ghRepo}/contents/products.json`;
-
-/* Fetch products.json from GitHub — called on boot and after admin saves */
+/* ── PRODUCTS: fetch from raw GitHub (public, no token needed) ── */
 async function fetchProducts() {
   try {
-    const r = await fetch(GH_API() + '?t=' + Date.now(), {
-      headers: CONFIG.ghToken ? { Authorization: 'token ' + CONFIG.ghToken } : {},
-    });
+    // Cache-bust so customers always get the latest version
+    const url = CONFIG.productsUrl + '?t=' + Date.now();
+    const r = await fetch(url);
     if (!r.ok) throw new Error('HTTP ' + r.status);
-    const meta = await r.json();
-    ghFileSha = meta.sha;
-    const decoded = decodeURIComponent(escape(atob(meta.content.replace(/\n/g, ''))));
-    PRODUCTS = JSON.parse(decoded);
+    PRODUCTS = await r.json();
+    // Cache locally so app works offline
+    localStorage.setItem('pc_products', JSON.stringify(PRODUCTS));
   } catch(e) {
-    console.warn('GitHub fetch failed, using seed:', e.message);
-    PRODUCTS = SEED_PRODUCTS;
+    console.warn('fetchProducts failed, using cache/seed:', e.message);
+    PRODUCTS = JSON.parse(localStorage.getItem('pc_products') || 'null') || SEED_PRODUCTS;
   }
 }
 
-/* Push products.json to GitHub — admin only */
-async function pushProducts() {
-  if (!CONFIG.ghToken) {
-    throw new Error("ghToken bo'sh! index.html ichidagi CONFIG.ghToken ga tokeningizni kiriting.");
-  }
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(PRODUCTS, null, 2))));
-  const body = {
-    message: 'chore: update products via admin panel',
-    content,
-    ...(ghFileSha ? { sha: ghFileSha } : {}),
-  };
-  // Fine-grained tokens use "Bearer", classic tokens use "token" — Bearer works for both
-  const r = await fetch(GH_API(), {
-    method: 'PUT',
-    headers: {
-      Authorization: 'Bearer ' + CONFIG.ghToken,
-      'Content-Type': 'application/json',
-      'X-GitHub-Api-Version': '2022-11-28',
-    },
-    body: JSON.stringify(body),
-  });
-  if (!r.ok) {
-    const err = await r.json().catch(() => ({}));
-    // Show a clear diagnostic message
-    const status = r.status;
-    let hint = '';
-    if (status === 401) hint = 'Token noto\'g\'ri yoki muddati o\'tgan. Yangi token yarating.';
-    else if (status === 403) hint = 'Token ruxsati yetarli emas. Contents → Read & Write bo\'lishi kerak.';
-    else if (status === 404) hint = 'Repo yoki fayl topilmadi. ghUser / ghRepo ni tekshiring.';
-    else if (status === 409) hint = 'Fayl o\'zgargan (sha mismatch). Sahifani yangilang va qaytadan urinib ko\'ring.';
-    throw new Error(`[${status}] ${err.message || 'GitHub xatosi'}${hint ? ' — ' + hint : ''}`);
-  }
-  const data = await r.json();
-  ghFileSha = data.content.sha;
-}
-
-/* Test GitHub connection — called from admin panel */
-async function testGitHub() {
-  const btn = document.getElementById('gh-test-btn');
-  btn.textContent = 'Tekshirilmoqda...'; btn.disabled = true;
-  try {
-    if (!CONFIG.ghToken) throw new Error("ghToken bo'sh");
-    const r = await fetch(GH_API(), {
-      headers: {
-        Authorization: 'Bearer ' + CONFIG.ghToken,
-        'X-GitHub-Api-Version': '2022-11-28',
-      }
-    });
-    const data = await r.json();
-    if (!r.ok) {
-      const hint = r.status === 401 ? ' (token noto\'g\'ri)' : r.status === 403 ? ' (ruxsat yo\'q)' : r.status === 404 ? ' (repo/fayl topilmadi)' : '';
-      throw new Error('[' + r.status + ']' + hint + ': ' + (data.message || ''));
+/* ── PRODUCTS: push via bot (bot holds the GitHub token) ── */
+async function pushProductsViaBot(adminUserId) {
+  // Send the full product list as a special message to the bot.
+  // The bot will write it to products.json on GitHub.
+  const payload = 'PRODUCTS_UPDATE:' + JSON.stringify(PRODUCTS);
+  const r = await fetch(
+    `https://api.telegram.org/bot${CONFIG.botToken}/sendMessage`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: adminUserId,
+        text: payload,
+        // hide the raw JSON from chat — bot will delete it after processing
+      }),
     }
-    ghFileSha = data.sha;
-    btn.textContent = '✅ Ulandi!';
-    btn.style.borderColor = 'var(--green)'; btn.style.color = 'var(--green)';
-    toast('✅ GitHub bilan muvaffaqiyatli ulandi!');
-  } catch(e) {
-    btn.textContent = '❌ Xatolik';
-    btn.style.borderColor = 'var(--red)'; btn.style.color = 'var(--red)';
-    alert('GitHub ulanish xatosi:\n\n' + e.message + '\n\nQuyidagi ko\'rsatmalarni tekshiring.');
-  } finally {
-    btn.disabled = false;
-    setTimeout(() => {
-      btn.textContent = '🔗 GitHub ulanishni tekshirish';
-      btn.style.borderColor = ''; btn.style.color = '';
-    }, 4000);
+  );
+  const j = await r.json();
+  if (!r.ok || !j.ok) throw new Error('Telegram: ' + (j.description || r.status));
+  // Bot receives the message, pushes to GitHub, and sends a confirmation.
+  // We wait up to 15 s for the confirmation message to appear via getUpdates.
+  return await waitForBotConfirmation(15000);
+}
+
+/* Poll getUpdates for a PRODUCTS_OK or PRODUCTS_ERR reply from bot */
+async function waitForBotConfirmation(timeoutMs) {
+  const deadline = Date.now() + timeoutMs;
+  let offset = 0;
+  while (Date.now() < deadline) {
+    await new Promise(r => setTimeout(r, 1500));
+    try {
+      const r = await fetch(
+        `https://api.telegram.org/bot${CONFIG.botToken}/getUpdates?offset=${offset}&limit=20&timeout=1`
+      );
+      const d = await r.json();
+      for (const upd of (d.result || [])) {
+        offset = upd.update_id + 1;
+        const txt = upd.message?.text || '';
+        if (txt === 'PRODUCTS_OK') return true;
+        if (txt.startsWith('PRODUCTS_ERR:')) throw new Error(txt.replace('PRODUCTS_ERR:', ''));
+      }
+    } catch(e) {
+      if (e.message && !e.message.includes('getUpdates')) throw e;
+    }
   }
+  throw new Error("Bot 15 soniya ichida javob bermadi. Bot ishlayotganini tekshiring.");
 }
 
 /* ══════════════════════════════════════════════════
@@ -1297,21 +1260,29 @@ async function saveProduct() {
     PRODUCTS.push(productData);
   }
 
-  // Push to GitHub so ALL users see the change
+  // Get admin user ID from Telegram
+  let adminUserId = tg?.initDataUnsafe?.user?.id;
+  if (!adminUserId && tg?.initData) {
+    try { adminUserId = JSON.parse(decodeURIComponent(new URLSearchParams(tg.initData).get('user') || '{}')).id; } catch(e) {}
+  }
+  if (!adminUserId) { toast("Iltimos, ilovani Telegram orqali oching"); return; }
+
   const btn = document.querySelector('.modal-save');
   const origText = btn.textContent;
-  btn.disabled = true; btn.textContent = 'GitHub-ga saqlanmoqda...';
+  btn.disabled = true; btn.textContent = '⏳ Saqlanmoqda...';
   try {
-    await pushProducts();
+    await pushProductsViaBot(adminUserId);
+    // Also cache locally
+    localStorage.setItem('pc_products', JSON.stringify(PRODUCTS));
     closeProductForm();
     renderProductManager();
     renderHome();
     renderCatalog();
-    toast(editingId != null ? '✅ Mahsulot yangilandi — barcha foydalanuvchilarda ko\'rinadi' : '✅ Yangi mahsulot qo\'shildi — barcha foydalanuvchilarda ko\'rinadi');
+    toast(editingId != null ? '✅ Yangilandi — barcha foydalanuvchilarda ko\'rinadi' : '✅ Qo\'shildi — barcha foydalanuvchilarda ko\'rinadi');
   } catch(e) {
     toast('❌ Xatolik: ' + e.message);
-    // Roll back the local change
-    await fetchProducts();
+    await fetchProducts(); // roll back to last known good state
+    renderProductManager(); renderHome(); renderCatalog();
   } finally {
     btn.disabled = false; btn.textContent = origText;
   }
@@ -1328,16 +1299,20 @@ async function deleteProduct(id) {
   delete cart[id];
   saveLocal(); syncBadge();
 
+  let adminUserId = tg?.initDataUnsafe?.user?.id;
+  if (!adminUserId && tg?.initData) {
+    try { adminUserId = JSON.parse(decodeURIComponent(new URLSearchParams(tg.initData).get('user') || '{}')).id; } catch(e) {}
+  }
+
   try {
-    await pushProducts();
+    await pushProductsViaBot(adminUserId);
+    localStorage.setItem('pc_products', JSON.stringify(PRODUCTS));
     renderProductManager();
     renderHome();
     renderCatalog();
     toast(`🗑 "${p.name}" o'chirildi — barcha foydalanuvchilarda o'chirildi`);
   } catch(e) {
-    // Roll back
-    PRODUCTS = prev;
-    cart[id] = cart[id]; // restore if needed
+    PRODUCTS = prev; // roll back
     renderProductManager();
     toast('❌ O\'chirishda xatolik: ' + e.message);
   }
