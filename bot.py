@@ -15,7 +15,7 @@ from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
 from aiogram.types import (
     Message, CallbackQuery,
-    ReplyKeyboardMarkup, KeyboardButton, WebAppInfo,
+    InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo,
 )
 
 # ══════════════════════════════════════════════════
@@ -30,10 +30,9 @@ dp = Dispatcher()
 
 
 def main_kb():
-    return ReplyKeyboardMarkup(
-        keyboard=[[KeyboardButton(text="🛍 Do'konni ochish", web_app=WebAppInfo(url=WEBAPP_URL))]],
-        resize_keyboard=True,
-    )
+    return InlineKeyboardMarkup(inline_keyboard=[[
+        InlineKeyboardButton(text="🛍 Do'konni ochish", web_app=WebAppInfo(url=WEBAPP_URL))
+    ]])
 
 
 @dp.message(CommandStart())
