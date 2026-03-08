@@ -9,11 +9,12 @@ import asyncio
 import logging
 import re
 
+
 from aiogram import Bot, Dispatcher, F
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove
 
 # ══════════════════════════════════════════════════
 BOT_TOKEN  = "8045542724:AAGcakq1YxNSxdCB1aw0Lln1BPKymIHUWjA"
@@ -31,6 +32,7 @@ async def on_start(message: Message):
     await message.answer(
         f"👋 <b>{SHOP_NAME}</b>ga xush kelibsiz!\n\n"
         f"Pastdagi ko'k tugmani bosib do'konni oching 🌸"
+        reply_markup = ReplyKeyboardRemove(remove_keyboard = True)
     )
 
 
