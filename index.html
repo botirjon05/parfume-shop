@@ -333,6 +333,7 @@ select.finp option{background:var(--card);color:var(--text)}
         <div class="pm-count" id="pm-count"></div>
         <button class="pm-add-btn" onclick="openProductForm(null)">＋ Yangi mahsulot</button>
       </div>
+      <button id="gh-test-btn" onclick="testGitHub()" style="width:100%;margin-bottom:12px;padding:9px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-family:'Jost',sans-serif;cursor:pointer;">🔗 GitHub ulanishni tekshirish</button>
       <div id="pm-list"></div>
     </div>
   </div>
@@ -460,14 +461,14 @@ const CONFIG = {
   shopName : 'Parfume Center',
 
   // ── GITHUB SYNC ──────────────────────────────────
-  // 1. GitHub username (https://github.com/botirjon05)
+  // 1. GitHub username (https://github.com/USERNAME)
   ghUser  : 'botirjon05',
   // 2. Repository name (same repo as GitHub Pages)
   ghRepo  : 'parfume-shop',
   // 3. Personal Access Token
   //    github.com → Settings → Developer settings → Fine-grained tokens
   //    Permissions: "Contents" → Read & Write  (only this repo)
-  ghToken : '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',   // ← paste your token here
+  ghToken : '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',   // ← paste your token here
 };
 
 /* ══════════════════════════════════════════════════
@@ -569,8 +570,7 @@ async function fetchProducts() {
 /* Push products.json to GitHub — admin only */
 async function pushProducts() {
   if (!CONFIG.ghToken) {
-    toast('⚠️ GitHub token kiritilmagan! CONFIG.ghToken ni to\'ldiring.');
-    throw new Error('No GitHub token');
+    throw new Error("ghToken bo'sh! index.html ichidagi CONFIG.ghToken ga tokeningizni kiriting.");
   }
   const content = btoa(unescape(encodeURIComponent(JSON.stringify(PRODUCTS, null, 2))));
   const body = {
@@ -578,20 +578,63 @@ async function pushProducts() {
     content,
     ...(ghFileSha ? { sha: ghFileSha } : {}),
   };
+  // Fine-grained tokens use "Bearer", classic tokens use "token" — Bearer works for both
   const r = await fetch(GH_API(), {
     method: 'PUT',
     headers: {
-      Authorization: 'token ' + CONFIG.ghToken,
+      Authorization: 'Bearer ' + CONFIG.ghToken,
       'Content-Type': 'application/json',
+      'X-GitHub-Api-Version': '2022-11-28',
     },
     body: JSON.stringify(body),
   });
   if (!r.ok) {
     const err = await r.json().catch(() => ({}));
-    throw new Error(err.message || 'GitHub push failed: ' + r.status);
+    // Show a clear diagnostic message
+    const status = r.status;
+    let hint = '';
+    if (status === 401) hint = 'Token noto\'g\'ri yoki muddati o\'tgan. Yangi token yarating.';
+    else if (status === 403) hint = 'Token ruxsati yetarli emas. Contents → Read & Write bo\'lishi kerak.';
+    else if (status === 404) hint = 'Repo yoki fayl topilmadi. ghUser / ghRepo ni tekshiring.';
+    else if (status === 409) hint = 'Fayl o\'zgargan (sha mismatch). Sahifani yangilang va qaytadan urinib ko\'ring.';
+    throw new Error(`[${status}] ${err.message || 'GitHub xatosi'}${hint ? ' — ' + hint : ''}`);
   }
   const data = await r.json();
-  ghFileSha = data.content.sha;   // update sha for next save
+  ghFileSha = data.content.sha;
+}
+
+/* Test GitHub connection — called from admin panel */
+async function testGitHub() {
+  const btn = document.getElementById('gh-test-btn');
+  btn.textContent = 'Tekshirilmoqda...'; btn.disabled = true;
+  try {
+    if (!CONFIG.ghToken) throw new Error("ghToken bo'sh");
+    const r = await fetch(GH_API(), {
+      headers: {
+        Authorization: 'Bearer ' + CONFIG.ghToken,
+        'X-GitHub-Api-Version': '2022-11-28',
+      }
+    });
+    const data = await r.json();
+    if (!r.ok) {
+      const hint = r.status === 401 ? ' (token noto\'g\'ri)' : r.status === 403 ? ' (ruxsat yo\'q)' : r.status === 404 ? ' (repo/fayl topilmadi)' : '';
+      throw new Error('[' + r.status + ']' + hint + ': ' + (data.message || ''));
+    }
+    ghFileSha = data.sha;
+    btn.textContent = '✅ Ulandi!';
+    btn.style.borderColor = 'var(--green)'; btn.style.color = 'var(--green)';
+    toast('✅ GitHub bilan muvaffaqiyatli ulandi!');
+  } catch(e) {
+    btn.textContent = '❌ Xatolik';
+    btn.style.borderColor = 'var(--red)'; btn.style.color = 'var(--red)';
+    alert('GitHub ulanish xatosi:\n\n' + e.message + '\n\nQuyidagi ko\'rsatmalarni tekshiring.');
+  } finally {
+    btn.disabled = false;
+    setTimeout(() => {
+      btn.textContent = '🔗 GitHub ulanishni tekshirish';
+      btn.style.borderColor = ''; btn.style.color = '';
+    }, 4000);
+  }
 }
 
 /* ══════════════════════════════════════════════════
