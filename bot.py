@@ -31,7 +31,7 @@ dp = Dispatcher()
 async def on_start(message: Message):
     await message.answer(
         f"👋 <b>{SHOP_NAME}</b>ga xush kelibsiz!\n\n"
-        f"Pastdagi ko'k tugmani bosib do'konni oching 🌸"
+        f"Pastdagi ko'k tugmani bosib do'konni oching 🌸",
         reply_markup = ReplyKeyboardRemove(remove_keyboard = True)
     )
 
