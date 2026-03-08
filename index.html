@@ -70,29 +70,8 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-he
 .pcard{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:border-color .2s;animation:fadeUp .35s ease both}
 .pcard:active{border-color:var(--gold)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-
-.pcard-img{
-  width:100%;
-  aspect-ratio:1;
-  background:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:44px;
-  position:relative;
-  overflow:hidden;
-  padding:10px;
-}
-.pcard-img img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  object-position:center;
-  position:absolute;
-  inset:0;
-  z-index:1;
-}
-
+.pcard-img{width:100%;aspect-ratio:1;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:44px;position:relative;overflow:hidden}
+.pcard-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:1}
 .pbadge{position:absolute;top:8px;left:8px;background:var(--rose);color:#fff;font-size:9px;font-weight:500;padding:3px 8px;border-radius:999px;z-index:2}
 .pcard-body{padding:11px}
 .pcard-name{font-family:'Playfair Display',serif;font-size:14px;line-height:1.3;margin-bottom:2px}
@@ -110,16 +89,7 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-he
 .dsheet.on{transform:translateY(0)}
 .drag-bar{width:36px;height:4px;border-radius:2px;background:var(--border);margin:12px auto 0}
 .dsheet-hero{aspect-ratio:16/9;background:linear-gradient(135deg,#1E1409,#0E0C0A);display:flex;align-items:center;justify-content:center;font-size:64px;position:relative;overflow:hidden}
-
-.dsheet-hero img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  object-position:center;
-  position:absolute;
-  inset:0;
-}
-
+.dsheet-hero img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
 .dsheet-body{padding:20px 20px 0}
 .dsheet-cat{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
 .dsheet-name{font-family:'Playfair Display',serif;font-size:26px;font-weight:400;margin-bottom:3px}
@@ -144,14 +114,7 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-he
 .clist{padding:14px 18px}
 .citem{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);animation:fadeUp .3s ease both}
 .citem-img{width:56px;height:56px;border-radius:12px;background:var(--card);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden}
-
-.citem-img img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  object-position:center;
-}
-
+.citem-img img{width:100%;height:100%;object-fit:cover}
 .citem-info{flex:1;min-width:0}
 .citem-name{font-family:'Playfair Display',serif;font-size:15px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .citem-sub{font-size:12px;color:var(--muted)}
@@ -245,30 +208,8 @@ select.finp option{background:var(--card);color:var(--text)}
 .pm-count{font-size:12px;color:var(--muted)}
 .pm-add-btn{display:flex;align-items:center;gap:5px;background:var(--gold);color:#000;border:none;border-radius:999px;padding:9px 18px;font-size:12px;font-weight:500;font-family:'Jost',sans-serif;cursor:pointer}
 .pm-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:10px;display:flex;gap:12px;align-items:center;animation:fadeUp .28s ease both}
-
-.pm-thumb{
-  width:58px;
-  height:58px;
-  border-radius:10px;
-  background:#fff;
-  flex-shrink:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:24px;
-  overflow:hidden;
-  position:relative;
-  padding:4px;
-}
-.pm-thumb img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  object-position:center;
-  position:absolute;
-  inset:0;
-}
-
+.pm-thumb{width:58px;height:58px;border-radius:10px;background:var(--surface);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:24px;overflow:hidden;position:relative}
+.pm-thumb img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
 .pm-info{flex:1;min-width:0}
 .pm-name{font-family:'Playfair Display',serif;font-size:14px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pm-meta{font-size:11px;color:var(--muted);margin-bottom:3px}
@@ -514,9 +455,13 @@ select.finp option{background:var(--card);color:var(--text)}
 const CONFIG = {
   botToken : '8045542724:AAGcakq1YxNSxdCB1aw0Lln1BPKymIHUWjA',
   adminIds : [887340351],
-  adminPass: 'admin123',   // ← o'zingizning parolingizni o'rnating
+  adminPass: 'admin123',
   currency : '$',
   shopName : 'Parfume Center',
+
+  // ── SUPABASE ─────────────────────────────────────
+  sbUrl : 'https://gciabjzfhlyfgpnugtxc.supabase.co',
+  sbKey : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjaWFianpmaGx5ZmdwbnVndHhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5NzAwMzcsImV4cCI6MjA4ODU0NjAzN30.yVVAxvPeF1yDiR9hku5OqpCPjhqO-TbpM-Tosoj-akY',
 };
 
 /* ══════════════════════════════════════════════════
@@ -574,22 +519,106 @@ const SEED_PRODUCTS = [
 ];
 
 /* ══════════════════════════════════════════════════
-   STATE  — all persisted in localStorage
+   STATE
+   - cart & orders  → localStorage (per-user, private)
+   - PRODUCTS       → Supabase (shared, all users, real-time)
 ══════════════════════════════════════════════════ */
-let cart     = JSON.parse(localStorage.getItem('pc_cart')     || '{}');
-let orders   = JSON.parse(localStorage.getItem('pc_orders')   || '[]');
-let PRODUCTS = JSON.parse(localStorage.getItem('pc_products') || 'null') || SEED_PRODUCTS;
+let cart     = JSON.parse(localStorage.getItem('pc_cart')   || '{}');
+let orders   = JSON.parse(localStorage.getItem('pc_orders') || '[]');
+let PRODUCTS = SEED_PRODUCTS;   // will be replaced by Supabase fetch on boot
 
 let selCat = 'all', searchQ = '', adminLoggedIn = false;
 let orderFilter = 'all', adminActiveTab = 'orders';
-let editingId = null;   // product being edited (null = new)
+let editingId = null;
 let syncTimer = null, lastUpdateId = 0;
 
-const saveAll = () => {
-  localStorage.setItem('pc_cart',     JSON.stringify(cart));
-  localStorage.setItem('pc_orders',   JSON.stringify(orders));
-  localStorage.setItem('pc_products', JSON.stringify(PRODUCTS));
+/* Save cart + orders locally (private per-user data) */
+const saveLocal = () => {
+  localStorage.setItem('pc_cart',   JSON.stringify(cart));
+  localStorage.setItem('pc_orders', JSON.stringify(orders));
 };
+
+/* ── SUPABASE HELPERS ── */
+const sbHeaders = () => ({
+  'Content-Type': 'application/json',
+  'apikey': CONFIG.sbKey,
+  'Authorization': 'Bearer ' + CONFIG.sbKey,
+});
+const sbUrl = (path) => CONFIG.sbUrl + '/rest/v1/' + path;
+
+/* Fetch all products from Supabase — called on boot */
+async function fetchProducts() {
+  try {
+    const r = await fetch(sbUrl('products?select=*&order=id'), { headers: sbHeaders() });
+    if (!r.ok) throw new Error('Supabase ' + r.status);
+    const rows = await r.json();
+    PRODUCTS = rows.map(dbToProduct);
+    localStorage.setItem('pc_products', JSON.stringify(PRODUCTS));
+  } catch(e) {
+    console.warn('fetchProducts failed, using cache/seed:', e.message);
+    PRODUCTS = JSON.parse(localStorage.getItem('pc_products') || 'null') || SEED_PRODUCTS;
+  }
+}
+
+/* Upsert (insert or update) one product in Supabase */
+async function sbUpsert(product) {
+  const row = productToDb(product);
+  const r = await fetch(sbUrl('products'), {
+    method: 'POST',
+    headers: { ...sbHeaders(), 'Prefer': 'resolution=merge-duplicates,return=representation' },
+    body: JSON.stringify(row),
+  });
+  if (!r.ok) {
+    const err = await r.json().catch(() => ({}));
+    throw new Error(err.message || err.hint || 'Supabase upsert ' + r.status);
+  }
+  return await r.json();
+}
+
+/* Delete one product from Supabase */
+async function sbDelete(id) {
+  const r = await fetch(sbUrl('products?id=eq.' + id), {
+    method: 'DELETE',
+    headers: sbHeaders(),
+  });
+  if (!r.ok) {
+    const err = await r.json().catch(() => ({}));
+    throw new Error(err.message || 'Supabase delete ' + r.status);
+  }
+}
+
+/* Convert Supabase DB row → app product object */
+function dbToProduct(row) {
+  return {
+    id:    row.id,
+    cat:   row.cat,
+    name:  row.name,
+    vol:   row.vol,
+    emoji: row.emoji || '🌸',
+    price: Number(row.price),
+    badge: row.badge || undefined,
+    desc:  row.description,
+    notes: Array.isArray(row.notes) ? row.notes : [],
+    image: row.image || undefined,
+  };
+}
+
+/* Convert app product object → Supabase DB row */
+function productToDb(p) {
+  const row = {
+    id:    p.id,
+    cat:   p.cat,
+    name:  p.name,
+    vol:   p.vol,
+    emoji: p.emoji || '🌸',
+    price: Number(p.price),
+    badge: p.badge || null,
+    description: p.desc,
+    notes: p.notes || [],
+    image: p.image || null,
+  };
+  return row;
+}
 
 /* ══════════════════════════════════════════════════
    NAVIGATION
@@ -632,7 +661,7 @@ function cardHTML(p, delay) {
     <div class="pcard-img">
       ${p.badge ? `<div class="pbadge">${p.badge}</div>` : ''}
       ${imgEl}
-      <span style="${p.image ? 'position:relative;z-index:0' : ''}">${p.emoji || ''}</span>
+      <span style="${p.image ? 'position:relative;z-index:0' : ''}">${p.emoji || '🌸'}</span>
     </div>
     <div class="pcard-body">
       <div class="pcard-name">${p.name}</div>
@@ -701,7 +730,7 @@ function openDetail(id) {
   const hero = document.getElementById('d-hero');
   hero.innerHTML = p.image
     ? `<img src="${p.image}" alt="${p.name}" onerror="this.remove()"/><span style="position:relative">${p.emoji || '🌸'}</span>`
-    : `<span>${p.emoji || ''}</span>`;
+    : `<span>${p.emoji || '🌸'}</span>`;
 
   document.getElementById('d-cat').textContent   = CATS.find(c => c.id === p.cat)?.label || '';
   document.getElementById('d-name').textContent  = p.name;
@@ -739,7 +768,7 @@ function closeDetail() {
 ══════════════════════════════════════════════════ */
 function addItem(id) {
   cart[id] = (cart[id] || 0) + 1;
-  saveAll(); syncBadge();
+  saveLocal(); syncBadge();
   const p = PRODUCTS.find(x => x.id === id);
   toast(`${p?.emoji || '✅'} ${p?.name} savatga qo'shildi`);
   tg?.HapticFeedback?.impactOccurred('light');
@@ -748,7 +777,7 @@ function addItem(id) {
 function changeQty(id, delta) {
   cart[id] = (cart[id] || 0) + delta;
   if (cart[id] <= 0) delete cart[id];
-  saveAll(); syncBadge(); renderCart();
+  saveLocal(); syncBadge(); renderCart();
 }
 
 /* ══════════════════════════════════════════════════
@@ -854,7 +883,7 @@ async function submitOrder() {
 
   const items = Object.entries(cart).map(([id, qty]) => {
     const p = PRODUCTS.find(x => x.id == id);
-    return { id: +id, name: p.name, emoji: p.emoji || '', price: +p.price, qty };
+    return { id: +id, name: p.name, emoji: p.emoji || '🌸', price: +p.price, qty };
   });
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
   const shipping = subtotal >= 100 ? 0 : 9.99;
@@ -891,7 +920,7 @@ async function submitOrder() {
 
     orders.unshift({ id: orderId, items, name, phone, addr, note, total, status: 'pending', date: new Date().toISOString(), userId });
     cart = {};
-    saveAll(); syncBadge(); closeCheckout();
+    saveLocal(); syncBadge(); closeCheckout();
     document.getElementById('success').classList.add('on');
     tg?.HapticFeedback?.notificationOccurred('success');
 
@@ -975,7 +1004,7 @@ async function syncOrderStatuses() {
         }
       }
     }
-    if (changed) saveAll();
+    if (changed) saveLocal();
     const lbl = document.getElementById('sync-lbl');
     if (lbl) lbl.textContent = 'Yangilandi: ' + new Date().toLocaleTimeString('uz-UZ', { hour:'2-digit', minute:'2-digit' });
   } catch(e) { console.warn('Sync:', e); }
@@ -1095,7 +1124,7 @@ function adminOrderHTML(o, i) {
 async function adminSetStatus(orderId, status, userId) {
   const order = orders.find(o => String(o.id) === String(orderId));
   if (!order) return;
-  order.status = status; saveAll(); renderOrdersTab();
+  order.status = status; saveLocal(); renderOrdersTab();
   if (userId) {
     const msgs = {
       confirmed: "✅ <b>Buyurtmangiz tasdiqlandi!</b>\n\nBuyurtmangiz tayyorlanmoqda va tez orada jo'natiladi 🌸",
@@ -1122,8 +1151,8 @@ function renderProductManager() {
   }
   document.getElementById('pm-list').innerHTML = PRODUCTS.map((p, i) => {
     const img = p.image
-      ? `<img src="${p.image}" alt="${p.name}" onerror="this.style.display='none'"/><span style="position:relative">${p.emoji||''}</span>`
-      : `<span>${p.emoji || ''}</span>`;
+      ? `<img src="${p.image}" alt="${p.name}" onerror="this.style.display='none'"/><span style="position:relative">${p.emoji||'🌸'}</span>`
+      : `<span>${p.emoji || '🌸'}</span>`;
     const catLabel = CATS.find(c => c.id === p.cat)?.label || p.cat;
     return `
     <div class="pm-card" style="animation-delay:${i * .04}s">
@@ -1219,7 +1248,7 @@ function handleImg(input) {
 }
 
 /* ── SAVE PRODUCT ── */
-function saveProduct() {
+async function saveProduct() {
   const name  = document.getElementById('f-pname').value.trim();
   const vol   = document.getElementById('f-vol').value.trim();
   const price = parseFloat(document.getElementById('f-pprice').value);
@@ -1235,16 +1264,13 @@ function saveProduct() {
   const productData = {
     id:    editingId != null ? editingId : Date.now(),
     cat:   document.getElementById('f-cat').value,
-    name,
-    vol,
-    emoji: document.getElementById('f-emoji').value.trim(),
+    name, vol,
+    emoji: document.getElementById('f-emoji').value.trim() || '🌸',
     price,
     badge: document.getElementById('f-pbadge').value.trim() || undefined,
-    desc,
-    notes,
+    desc, notes,
     image: document.getElementById('f-img').value || undefined,
   };
-  // Remove undefined keys
   Object.keys(productData).forEach(k => productData[k] === undefined && delete productData[k]);
 
   if (editingId != null) {
@@ -1254,28 +1280,52 @@ function saveProduct() {
     PRODUCTS.push(productData);
   }
 
-  saveAll();
-  closeProductForm();
-  renderProductManager();
-  renderHome();
-  renderCatalog();
-  toast(editingId != null ? '✅ Mahsulot yangilandi' : '✅ Yangi mahsulot qo\'shildi');
+  const btn = document.querySelector('.modal-save');
+  const origText = btn.textContent;
+  btn.disabled = true; btn.textContent = '⏳ Saqlanmoqda...';
+  try {
+    await sbUpsert(productData);
+    // Update local cache
+    localStorage.setItem('pc_products', JSON.stringify(PRODUCTS));
+    closeProductForm();
+    renderProductManager();
+    renderHome();
+    renderCatalog();
+    toast(editingId != null ? '✅ Yangilandi!' : '✅ Yangi mahsulot qo\'shildi!');
+  } catch(e) {
+    toast('❌ Xatolik: ' + e.message);
+    // Roll back local state
+    await fetchProducts();
+    renderProductManager(); renderHome(); renderCatalog();
+  } finally {
+    btn.disabled = false; btn.textContent = origText;
+  }
 }
 
 /* ── DELETE PRODUCT ── */
-function deleteProduct(id) {
+async function deleteProduct(id) {
   const p = PRODUCTS.find(x => x.id === id);
   if (!p) return;
   if (!confirm(`"${p.name}" mahsulotini o'chirishni tasdiqlaysizmi?`)) return;
+
+  const prev = [...PRODUCTS];
   PRODUCTS = PRODUCTS.filter(x => x.id !== id);
-  // Also remove from cart if present
   delete cart[id];
-  saveAll();
-  renderProductManager();
-  renderHome();
-  renderCatalog();
-  syncBadge();
-  toast(`🗑 "${p.name}" o'chirildi`);
+  saveLocal(); syncBadge();
+
+  try {
+    await sbDelete(id);
+    localStorage.setItem('pc_products', JSON.stringify(PRODUCTS));
+    renderProductManager();
+    renderHome();
+    renderCatalog();
+    toast(`🗑 "${p.name}" o'chirildi!`);
+  } catch(e) {
+    PRODUCTS = prev; // roll back
+    cart[id] = prev.find(x => x.id === id) ? cart[id] : undefined;
+    renderProductManager();
+    toast('❌ O\'chirishda xatolik: ' + e.message);
+  }
 }
 
 /* ══════════════════════════════════════════════════
@@ -1291,10 +1341,16 @@ function toast(msg) {
 }
 
 /* ══════════════════════════════════════════════════
-   BOOT
+   BOOT  — fetch products from Supabase, then render
 ══════════════════════════════════════════════════ */
-syncBadge();
-renderHome();
+(async () => {
+  // Show skeleton while loading
+  document.getElementById('home-grid').innerHTML =
+    '<div class="no-results" style="grid-column:1/-1;padding:40px 0">⏳ Yuklanmoqda...</div>';
+  await fetchProducts();
+  syncBadge();
+  renderHome();
+})();
 </script>
 </body>
 </html>
