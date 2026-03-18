@@ -70,8 +70,28 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-he
 .pcard{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:border-color .2s;animation:fadeUp .35s ease both}
 .pcard:active{border-color:var(--gold)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.pcard-img{width:100%;aspect-ratio:1;background:var(--surface);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:44px}
-.pcard-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+
+.pcard-img{
+  width:100%;
+  aspect-ratio:1 / 1;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.pcard-img img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  position:absolute;
+  inset:0;
+  padding: 10px;
+}
+
 .pcard-img .pcard-emoji{position:relative;z-index:1}
 .pbadge{position:absolute;top:8px;left:8px;background:var(--rose);color:#fff;font-size:9px;font-weight:500;padding:3px 8px;border-radius:999px;z-index:2}
 .pcard-body{padding:11px}
@@ -90,7 +110,16 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-he
 .dsheet.on{transform:translateY(0)}
 .drag-bar{width:36px;height:4px;border-radius:2px;background:var(--border);margin:12px auto 0}
 .dsheet-hero{aspect-ratio:16/9;background:linear-gradient(135deg,#1E1409,#0E0C0A);display:flex;align-items:center;justify-content:center;font-size:64px;position:relative;overflow:hidden}
-.dsheet-hero img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+
+.dsheet-hero img{
+  width:100%;
+  height:100%;
+  object-fit: contain;
+  object-position:center;
+  position: absolute;
+  inset: 0;
+}
+
 .dsheet-body{padding:20px 20px 0}
 .dsheet-cat{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
 .dsheet-name{font-family:'Playfair Display',serif;font-size:26px;font-weight:400;margin-bottom:3px}
@@ -115,7 +144,14 @@ body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-he
 .clist{padding:14px 18px}
 .citem{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);animation:fadeUp .3s ease both}
 .citem-img{width:56px;height:56px;border-radius:12px;background:var(--card);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden}
-.citem-img img{width:100%;height:100%;object-fit:cover}
+
+.citem-img img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+}
+
 .citem-info{flex:1;min-width:0}
 .citem-name{font-family:'Playfair Display',serif;font-size:15px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .citem-sub{font-size:12px;color:var(--muted)}
@@ -209,8 +245,32 @@ select.finp option{background:var(--card);color:var(--text)}
 .pm-count{font-size:12px;color:var(--muted)}
 .pm-add-btn{display:flex;align-items:center;gap:5px;background:var(--gold);color:#000;border:none;border-radius:999px;padding:9px 18px;font-size:12px;font-weight:500;font-family:'Jost',sans-serif;cursor:pointer}
 .pm-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:10px;display:flex;gap:12px;align-items:center;animation:fadeUp .28s ease both}
-.pm-thumb{width:58px;height:58px;border-radius:10px;background:var(--surface);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:24px;overflow:hidden;position:relative}
-.pm-thumb img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+
+
+.pm-thumb{
+  width:58px;
+  height:58px;
+  border-radius:10px;
+  background:#fff;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  overflow:hidden;
+  position:relative;
+  padding:4px;
+}
+
+.pm-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  position:absolute;
+  inset:0;
+}
+
 .pm-info{flex:1;min-width:0}
 .pm-name{font-family:'Playfair Display',serif;font-size:14px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pm-meta{font-size:11px;color:var(--muted);margin-bottom:3px}
@@ -428,7 +488,7 @@ select.finp option{background:var(--card);color:var(--text)}
           <option value="gft">🎁 Sovga</option>
         </select>
       </div>
-      <div class="fgrp"><label class="flbl">Emoji belgisi</label><input class="finp" id="f-emoji" placeholder="🌸" maxlength="4"/></div>
+      <div class="fgrp"><label class="flbl">Emoji belgisi</label><input class="finp" id="f-emoji" placeholder="" maxlength="4"/></div>
     </div>
     <div class="fgrp"><label class="flbl">Badge (ixtiyoriy)</label><input class="finp" id="f-pbadge" placeholder="New / Bestseller / Limited / Premium"/></div>
     <div class="fgrp"><label class="flbl">Tavsif *</label><textarea class="finp ftx" id="f-desc" style="height:80px" placeholder="Mahsulot haqida qisqacha ma'lumot..."></textarea></div>
@@ -496,25 +556,25 @@ const CATS = [
    After that, admin's saved list is used instead.
 ══════════════════════════════════════════════════ */
 const SEED_PRODUCTS = [
-  { id:1, cat:'her', name:'Baccarat Rouge 540', vol:'70ml EDP', emoji:'✨', price:189, badge:'Bestseller',
+  { id:1, cat:'her', name:'Baccarat Rouge 540', vol:'70ml EDP', emoji:'', price:189, badge:'Bestseller',
     desc:"Zafaron va Jasmin uyg'unligi, iliq ambra va kedr daraxti bilan boyitilgan. Hashamatli, yorqin va unitilmas ifor.",
     notes:['Zafaron','Jasmin','Ambra','Kedr daraxti'] },
-  { id:2, cat:'her', name:'Libre Intense', vol:'50ml EDP', emoji:'🌸', price:125, badge:'New',
+  { id:2, cat:'her', name:'Libre Intense', vol:'50ml EDP', emoji:'', price:125, badge:'New',
     desc:"Lavanda va apelsin gulining kuchli uyg'unligi, shirin vanil bilan boyitilgan. Zamonaviy ayollar uchun.",
     notes:['Lavanda','Apelsin guli','Vanil','Tonka Doni'] },
-  { id:3, cat:'her', name:'Born in Roma Donna', vol:'50ml EDP', emoji:'🌹', price:115,
+  { id:3, cat:'her', name:'Born in Roma Donna', vol:'50ml EDP', emoji:'', price:115,
     desc:"Qora smorodina va Jasmin nafisligi, iliq vanil bilan uyg'unlashgan. Nafosat va uzoq saqlanuvchi hid.",
     notes:['Qora smorodina','Jasmin','Vanil','Kashmeran'] },
-  { id:4, cat:'him', name:'Sauvage Elixir', vol:'60ml EDT', emoji:'🔥', price:165, badge:'Bestseller',
+  { id:4, cat:'him', name:'Sauvage Elixir', vol:'60ml EDT', emoji:'', price:165, badge:'Bestseller',
     desc:"Dolchin va muskat ziravorlari, lavanda va yog'och notalari bilan uyg'unlashgan. Kuchli va jozibador.",
     notes:['Dolchin',"Muskat Yong'og'i",'Lavanda','Sandal daraxti'] },
-  { id:5, cat:'him', name:'Bleu De Chanel', vol:'100ml EDP', emoji:'🖤', price:150, badge:'Limited',
+  { id:5, cat:'him', name:'Bleu De Chanel', vol:'100ml EDP', emoji:'', price:150, badge:'Limited',
     desc:"Sitrus va tutunli yog'och notalari bilan chuqur va zamonaviy ifor. Har kuni uchun mukammal tanlov.",
     notes:['Greypfrut','Zanjabil','Yalpiz','Kedr Daraxti'] },
-  { id:6, cat:'uni', name:'Oud for Greatness', vol:'90ml EDP', emoji:'🪵', price:210, badge:'Premium',
+  { id:6, cat:'uni', name:'Oud for Greatness', vol:'90ml EDP', emoji:'', price:210, badge:'Premium',
     desc:"Qimmatbaho oud, zafaron va lavanda uyg'unligi. Kuchli, boy va hashamatli ifor.",
     notes:['Oud','Zafaron','Lavanda','Patchouli'] },
-  { id:7, cat:'gft', name:'Luxury Discovery Set', vol:'3×15ml', emoji:'🎁', price:79.99,
+  { id:7, cat:'gft', name:'Luxury Discovery Set', vol:'3×15ml', emoji:'', price:79.99,
     desc:"Eng mashhur 3 ta ifordan iborat mini to'plam. Sovg'a uchun ideal tanlov.",
     notes:['Gul','Oud','Amber','Musk',"Yog'och"] },
 ];
@@ -595,7 +655,7 @@ function dbToProduct(row) {
     cat:   row.cat,
     name:  row.name,
     vol:   row.vol,
-    emoji: row.emoji || '🌸',
+    emoji: row.emoji || '',
     price: Number(row.price),
     badge: row.badge || undefined,
     desc:  row.description,
@@ -611,7 +671,7 @@ function productToDb(p) {
     cat:   p.cat,
     name:  p.name,
     vol:   p.vol,
-    emoji: p.emoji || '🌸',
+    emoji: p.emoji || '',
     price: Number(p.price),
     badge: p.badge || null,
     description: p.desc,
@@ -657,8 +717,8 @@ function cardHTML(p, delay) {
   // If image: fill absolutely, no emoji (emoji only when no image or load fails)
   const imgInner = p.image
     ? `<img src="${p.image}" alt="${p.name}" loading="lazy"
-            onerror="this.outerHTML='<span class=pcard-emoji>${p.emoji||'🌸'}</span>'">`
-    : `<span class="pcard-emoji">${p.emoji || '🌸'}</span>`;
+            onerror="this.outerHTML='<span class=pcard-emoji>${p.emoji||''}</span>'">`
+    : `<span class="pcard-emoji">${p.emoji || ''}</span>`;
   return `
   <div class="pcard" style="animation-delay:${delay}s" onclick="openDetail(${p.id})">
     <div class="pcard-img">
@@ -732,8 +792,8 @@ function openDetail(id) {
   const hero = document.getElementById('d-hero');
   hero.innerHTML = p.image
     ? `<img src="${p.image}" alt="${p.name}" onerror="this.style.display='none'"/>
-       <span style="position:relative">${p.emoji || '🌸'}</span>`
-    : `<span>${p.emoji || '🌸'}</span>`;
+       <span style="position:relative">${p.emoji || ''}</span>`
+    : `<span>${p.emoji || ''}</span>`;
 
   document.getElementById('d-cat').textContent   = CATS.find(c => c.id === p.cat)?.label || '';
   document.getElementById('d-name').textContent  = p.name;
@@ -888,7 +948,7 @@ async function submitOrder() {
 
   const items = Object.entries(cart).map(([id, qty]) => {
     const p = PRODUCTS.find(x => x.id == id);
-    return { id: +id, name: p.name, emoji: p.emoji || '🌸', price: +p.price, qty };
+    return { id: +id, name: p.name, emoji: p.emoji || '', price: +p.price, qty };
   });
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
   const shipping = subtotal >= 100 ? 0 : 9.99;
@@ -923,11 +983,47 @@ async function submitOrder() {
       `📱 ${phone}\n🏠 ${addr}${noteLine}\n\n${lines}\n\n💰 <b>Jami: ${CONFIG.currency}${total.toFixed(2)}</b>`, kb
     )));
 
-    orders.unshift({ id: orderId, items, name, phone, addr, note, total, status: 'pending', date: new Date().toISOString(), userId });
-    cart = {};
-    saveLocal(); syncBadge(); closeCheckout();
-    document.getElementById('success').classList.add('on');
-    tg?.HapticFeedback?.notificationOccurred('success');
+    // 1. orderni Supabase orders tablega yozamiz
+const { data: orderRow, error: orderError } = await supabase
+  .from('orders')
+  .insert([{
+    telegram_user_id: userId,
+    customer_name: name,
+    phone: phone,
+    address: addr,
+    note: note || null,
+    total: total,
+    status: 'pending'
+  }])
+  .select()
+  .single();
+
+if (orderError) throw orderError;
+
+// 2. order_items tayyorlaymiz
+const orderItemsPayload = items.map(i => ({
+  order_id: orderRow.id,
+  product_id: i.id,
+  product_name: i.name,
+  product_emoji: i.emoji || null,
+  price: i.price,
+  quantity: i.qty
+}));
+
+// 3. order_items tablega yozamiz
+const { error: itemsError } = await supabase
+  .from('order_items')
+  .insert(orderItemsPayload);
+
+if (itemsError) throw itemsError;
+
+// 4. local cartni tozalaymiz
+cart = {};
+localStorage.removeItem('pc_cart');
+syncBadge();
+closeCheckout();
+document.getElementById('success').classList.add('on');
+tg?.HapticFeedback?.notificationOccurred('success');
 
   } catch(err) {
     console.error(err);
@@ -1158,8 +1254,8 @@ function renderProductManager() {
     const img = p.image
       ? `<img src="${p.image}" alt="${p.name}"
            style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"
-           onerror="this.outerHTML='<span style=\"font-size:24px\">${p.emoji||'🌸'}</span>'"/>`
-      : `<span>${p.emoji || '🌸'}</span>`;
+           onerror="this.outerHTML='<span style=\"font-size:24px\">${p.emoji||''}</span>'"/>`
+      : `<span>${p.emoji || ''}</span>`;
     const catLabel = CATS.find(c => c.id === p.cat)?.label || p.cat;
     return `
     <div class="pm-card" style="animation-delay:${i * .04}s">
@@ -1272,7 +1368,7 @@ async function saveProduct() {
     id:    editingId != null ? editingId : Date.now(),
     cat:   document.getElementById('f-cat').value,
     name, vol,
-    emoji: document.getElementById('f-emoji').value.trim() || '🌸',
+    emoji: document.getElementById('f-emoji').value.trim() || '',
     price,
     badge: document.getElementById('f-pbadge').value.trim() || undefined,
     desc, notes,
