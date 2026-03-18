@@ -1131,13 +1131,46 @@ async function manualSync() { await syncOrderStatuses(); }
 /* ══════════════════════════════════════════════════
    ADMIN — LOGIN / LOGOUT
 ══════════════════════════════════════════════════ */
-function adminLogin() {
+
+async function fetchAllOrders() {
+  try {
+    const r = await fetch(
+      sbUrl('orders?select=*,order_items(*)&order=created_at.desc'),
+      { headers: sbHeaders() }
+    );
+    if (!r.ok) throw new Error('Supabase ' + r.status);
+    const rows = await r.json();
+    orders = rows.map(row => ({
+      id:     row.id,
+      name:   row.customer_name,
+      phone:  row.phone,
+      addr:   row.address,
+      note:   row.note || '',
+      total:  Number(row.total),
+      status: row.status,
+      date:   row.created_at,
+      userId: String(row.telegram_user_id),
+      items:  (row.order_items || []).map(item => ({
+        id:    item.product_id,
+        name:  item.product_name,
+        emoji: item.product_emoji || '',
+        price: Number(item.price),
+        qty:   item.quantity,
+      })),
+    }));
+  } catch(e) {
+    console.warn('fetchAllOrders failed:', e.message);
+  }
+}
+
+async function adminLogin() {
   if (document.getElementById('admin-pw').value !== CONFIG.adminPass) {
     toast("Noto'g'ri parol"); return;
   }
   adminLoggedIn = true;
   document.getElementById('admin-gate').style.display  = 'none';
   document.getElementById('admin-panel').classList.add('on');
+  await fetchAllOrders();
   renderAdminPanel();
 }
 
@@ -1148,7 +1181,7 @@ function adminLogout() {
   document.getElementById('admin-panel').classList.remove('on');
 }
 
-function renderAdmin() { if (adminLoggedIn) renderAdminPanel(); }
+function renderAdmin() { if (adminLoggedIn) { fetchAllOrders().then(() => renderAdminPanel()); } }
 
 /* ══════════════════════════════════════════════════
    ADMIN — TABS
@@ -1238,6 +1271,16 @@ async function adminSetStatus(orderId, status, userId) {
   const order = orders.find(o => String(o.id) === String(orderId));
   if (!order) return;
   order.status = status; saveLocal(); renderOrdersTab();
+
+  try {
+    await fetch(sbUrl('orders?id=eq.' + orderId), {
+      method: 'PATCH',
+      headers: sbHeaders(),
+      body: JSON.stringify({ status }),
+    });
+  } catch(e) { console.warn('Status update in Supabase failed:', e.message); }
+
+
   if (userId) {
     const msgs = {
       confirmed: "✅ <b>Buyurtmangiz tasdiqlandi!</b>\n\nBuyurtmangiz tayyorlanmoqda va tez orada jo'natiladi 🌸",
