@@ -1366,18 +1366,16 @@ function closeProductForm() {
   editingId = null;
 }
 
-/* ── IMAGE UPLOAD: compress & store as base64 ── */
+/* ── IMAGE UPLOAD: compress → Supabase Storage → URL saqlaydi ── */
 function handleImg(input) {
   const file = input.files[0];
   if (!file) return;
 
   const reader = new FileReader();
   reader.onload = e => {
-    const original = e.target.result;
-    // Compress with canvas
     const img = new Image();
-    img.onload = () => {
-      const MAX = 800;
+    img.onload = async () => {
+      const MAX = 900;
       let { width: w, height: h } = img;
       if (w > MAX || h > MAX) {
         const ratio = Math.min(MAX / w, MAX / h);
@@ -1387,22 +1385,59 @@ function handleImg(input) {
       const canvas = document.createElement('canvas');
       canvas.width = w; canvas.height = h;
       canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      const compressed = canvas.toDataURL('image/jpeg', 0.75);
 
-      // Preview
-      const drop = document.getElementById('img-drop');
-      const prev = drop.querySelector('img');
-      if (prev) prev.remove();
-      const preview = document.createElement('img');
-      preview.src = compressed;
-      drop.insertBefore(preview, drop.firstChild);
-      drop.classList.add('has-img');
-      document.getElementById('f-img').value = compressed;
+      canvas.toBlob(async (blob) => {
+        // Preview darhol ko'rsatamiz
+        const localUrl = URL.createObjectURL(blob);
+        const drop = document.getElementById('img-drop');
+        const prev = drop.querySelector('img');
+        if (prev) prev.remove();
+        const preview = document.createElement('img');
+        preview.src = localUrl;
+        drop.insertBefore(preview, drop.firstChild);
+        drop.classList.add('has-img');
+
+        const saveBtn = document.querySelector('.modal-save');
+        saveBtn.disabled = true;
+        saveBtn.textContent = '📤 Rasm yuklanmoqda...';
+
+        try {
+          const fileName = `product_${Date.now()}.jpg`;
+          const uploadRes = await fetch(
+            `${CONFIG.sbUrl}/storage/v1/object/product-images/${fileName}`,
+            {
+              method: 'POST',
+              headers: {
+                'apikey': CONFIG.sbKey,
+                'Authorization': 'Bearer ' + CONFIG.sbKey,
+                'Content-Type': 'image/jpeg',
+                'x-upsert': 'true',
+              },
+              body: blob,
+            }
+          );
+
+          if (!uploadRes.ok) {
+            const err = await uploadRes.json().catch(() => ({}));
+            throw new Error(err.message || 'Upload failed: ' + uploadRes.status);
+          }
+
+          const publicUrl = `${CONFIG.sbUrl}/storage/v1/object/public/product-images/${fileName}`;
+          document.getElementById('f-img').value = publicUrl;
+          toast('✅ Rasm yuklandi!');
+        } catch(e) {
+          toast('❌ Rasm yuklashda xatolik: ' + e.message);
+          document.getElementById('f-img').value = '';
+        } finally {
+          saveBtn.disabled = false;
+          saveBtn.textContent = '✓ Saqlash';
+        }
+      }, 'image/jpeg', 0.82);
     };
-    img.src = original;
+    img.src = e.target.result;
   };
   reader.readAsDataURL(file);
-  input.value = ''; // allow re-selecting same file
+  input.value = '';
 }
 
 /* ── SAVE PRODUCT ── */
