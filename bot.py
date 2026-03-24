@@ -17,7 +17,7 @@ from aiogram.filters import CommandStart
 from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove
 
 # ══════════════════════════════════════════════════
-BOT_TOKEN  = "8045542724:AAGcakq1YxNSxdCB1aw0Lln1BPKymIHUWjA"
+BOT_TOKEN  = os.getenv("BOT_TOKEN")
 ADMIN_IDS  = [887340351]
 SHOP_NAME  = "Parfume Center"
 WEBAPP_URL = "https://botirjon05.github.io/parfume-shop/"
