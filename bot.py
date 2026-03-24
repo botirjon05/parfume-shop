@@ -19,7 +19,7 @@ from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove
 
 # ══════════════════════════════════════════════════
 BOT_TOKEN  = os.getenv("BOT_TOKEN")
-ADMIN_IDS  = [887340351]
+ADMIN_IDS  = [887340351, 251244509]
 SHOP_NAME  = "Parfume Center"
 WEBAPP_URL = "https://botirjon05.github.io/parfume-shop/"
 # ══════════════════════════════════════════════════
