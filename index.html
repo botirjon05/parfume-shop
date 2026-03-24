@@ -587,7 +587,8 @@ const SEED_PRODUCTS = [
    - PRODUCTS       → Supabase (shared, all users, real-time)
 ══════════════════════════════════════════════════ */
 let cart     = JSON.parse(localStorage.getItem('pc_cart')   || '{}');
-let orders   = JSON.parse(localStorage.getItem('pc_orders') || '[]');
+let userOrders   = JSON.parse(localStorage.getItem('pc_orders') || '[]');
+let adminOrders = [];
 let PRODUCTS = SEED_PRODUCTS;   // will be replaced by Supabase fetch on boot
 
 let selCat = 'all', searchQ = '', adminLoggedIn = false;
@@ -598,7 +599,7 @@ let syncTimer = null, lastUpdateId = 0;
 /* Save cart + orders locally (private per-user data) */
 const saveLocal = () => {
   localStorage.setItem('pc_cart',   JSON.stringify(cart));
-  localStorage.setItem('pc_orders', JSON.stringify(orders));
+  localStorage.setItem('pc_orders', JSON.stringify(userOrders));
 };
 
 /* ── SUPABASE HELPERS ── */
@@ -1031,7 +1032,7 @@ async function submitOrder() {
     }
 
     // 3. Lokal state yangilaymiz
-    orders.unshift({ id: sbOrder.id, items, name, phone, addr, note, total, status: 'pending', date: new Date().toISOString(), userId });
+    userOrders.unshift({ id: sbOrder.id, items, name, phone, addr, note, total, status: 'pending', date: new Date().toISOString(), userId });
     cart = {};
     saveLocal(); syncBadge(); closeCheckout();
     document.getElementById('success').classList.add('on');
@@ -1063,7 +1064,7 @@ const SL = {
 
 function renderOrders() {
   const wrap = document.getElementById('olist');
-  if (!orders.length) {
+  if (!userOrders.length) {
     wrap.innerHTML = `<div class="empty-state"><div class="empty-ico">📦</div>
       <h3>Hali buyurtmalar yo'q</h3>
       <p>Xaridingizdan so'ng buyurtmalar tarixi shu yerda ko'rinadi.</p></div>`;
@@ -1077,7 +1078,7 @@ function renderOrders() {
         Yangilash
       </button>
     </div>
-    ${orders.map((o, i) => `
+    ${userOrders.map((o, i) => `
     <div class="ocard" id="ocard-${o.id}" style="animation-delay:${i * .05}s">
       <div class="ocard-top">
         <div class="oid">Buyurtma #${String(o.id).slice(-6)}</div>
@@ -1090,7 +1091,7 @@ function renderOrders() {
 }
 
 async function syncOrderStatuses() {
-  if (!orders.length) return;
+  if (!userOrders.length) return;
   const btn = document.getElementById('sync-btn');
   if (btn) btn.classList.add('spinning');
   try {
@@ -1105,7 +1106,7 @@ async function syncOrderStatuses() {
       const d = cb.data || '';
       if (!d.startsWith('st:')) continue;
       const [, uid, status] = d.split(':');
-      const order = orders.find(o => String(o.userId) === uid && o.status !== 'completed' && o.status !== 'cancelled' && o.status !== status);
+      const order = userOrders.find(o => String(o.userId) === uid && o.status !== 'completed' && o.status !== 'cancelled' && o.status !== status);
       if (order) {
         order.status = status; changed = true;
         const card = document.getElementById('ocard-' + order.id);
@@ -1140,7 +1141,7 @@ async function fetchAllOrders() {
     );
     if (!r.ok) throw new Error('Supabase ' + r.status);
     const rows = await r.json();
-    orders = rows.map(row => ({
+    adminOrders = rows.map(row => ({
       id:     row.id,
       name:   row.customer_name,
       phone:  row.phone,
@@ -1206,10 +1207,10 @@ function renderAdminPanel() {
    ADMIN — ORDERS TAB
 ══════════════════════════════════════════════════ */
 function renderOrdersTab() {
-  const total     = orders.length;
-  const pending   = orders.filter(o => o.status === 'pending').length;
-  const revenue   = orders.filter(o => o.status !== 'cancelled').reduce((s,o) => s + o.total, 0);
-  const delivered = orders.filter(o => o.status === 'completed').length;
+  const total     = adminOrders.length;
+  const pending   = adminOrders.filter(o => o.status === 'pending').length;
+  const revenue   = adminOrders.filter(o => o.status !== 'cancelled').reduce((s,o) => s + o.total, 0);
+  const delivered = adminOrders.filter(o => o.status === 'completed').length;
 
   document.getElementById('admin-stats').innerHTML = `
     <div class="stat-card"><div class="stat-num">${total}</div><div class="stat-lbl">Jami buyurtmalar</div></div>
@@ -1229,7 +1230,7 @@ function renderOrdersTab() {
     `<div class="afpill${f.id === orderFilter ? ' on' : ''}" onclick="setOrderFilter('${f.id}')">${f.label}</div>`
   ).join('');
 
-  const list = orderFilter === 'all' ? orders : orders.filter(o => o.status === orderFilter);
+  const list = orderFilter === 'all' ? adminOrders : adminOrders.filter(o => o.status === orderFilter);
   if (!list.length) {
     document.getElementById('admin-orders').innerHTML =
       `<div class="empty-state"><div class="empty-ico">📋</div><h3>Buyurtmalar yo'q</h3></div>`;
@@ -1268,7 +1269,7 @@ function adminOrderHTML(o, i) {
 }
 
 async function adminSetStatus(orderId, status, userId) {
-  const order = orders.find(o => String(o.id) === String(orderId));
+  const order = adminOrders.find(o => String(o.id) === String(orderId));
   if (!order) return;
   order.status = status; saveLocal(); renderOrdersTab();
 
