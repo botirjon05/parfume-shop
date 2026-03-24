@@ -1533,6 +1533,9 @@ function toast(msg) {
   toastTimer = setTimeout(() => el.classList.remove('on'), 2500);
 }
 
+localStorage.removeItem('pc_orders');
+localStorage.removeItem('pc_cart');
+
 /* ══════════════════════════════════════════════════
    BOOT  — fetch products from Supabase, then render
 ══════════════════════════════════════════════════ */
